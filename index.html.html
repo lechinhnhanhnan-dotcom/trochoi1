@@ -1,0 +1,2626 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>🌈 VƯỜN TRÍ TUỆ CỦA BÉ - Học mà chơi – Chơi mà học</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --red-vivid: #FF3B30;
+      --yellow-vivid: #FFCC00;
+      --blue-vivid: #007AFF;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    body {
+      font-family: 'Nunito', 'Fredoka', sans-serif;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      background: linear-gradient(180deg, #74D7FF 0%, #B8ECFF 52%, #9EE37D 52%, #68C144 100%);
+      min-height: 100vh;
+      touch-action: manipulation;
+    }
+
+    .title-font {
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+    }
+
+    /* Nút bấm nổi 3D mềm mại cho trẻ nhỏ */
+    .btn-3d {
+      transition: transform 0.14s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.14s ease;
+      box-shadow: 0 7px 0 rgba(0, 0, 0, 0.2), 0 12px 20px rgba(0, 0, 0, 0.14);
+      position: relative;
+    }
+    .btn-3d:active {
+      transform: translateY(5px) scale(0.98);
+      box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2), 0 5px 10px rgba(0, 0, 0, 0.12);
+    }
+    .btn-3d:hover {
+      filter: brightness(1.04);
+    }
+
+    /* Thẻ nổi 3D */
+    .card-3d {
+      background: rgba(255, 255, 255, 0.94);
+      border: 4px solid #FFFFFF;
+      box-shadow: 0 10px 0 rgba(21, 94, 117, 0.16), 0 18px 30px rgba(0, 0, 0, 0.12);
+      border-radius: 28px;
+    }
+
+    /* Hiệu ứng hoạt hình nhân vật */
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+    @keyframes bunnyHop {
+      0%, 100% { transform: translateY(0) scale(1, 1); }
+      30% { transform: translateY(-16px) scale(0.96, 1.05); }
+      60% { transform: translateY(0) scale(1.04, 0.96); }
+    }
+    @keyframes waveArm {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(-28deg); }
+      75% { transform: rotate(18deg); }
+    }
+    @keyframes talkMouth {
+      0%, 100% { transform: scaleY(0.35); }
+      50% { transform: scaleY(1.25); }
+    }
+    @keyframes cloudDrift {
+      0% { transform: translateX(-15vw); }
+      100% { transform: translateX(110vw); }
+    }
+    @keyframes sunSpin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    @keyframes celebrateDance {
+      0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+      25% { transform: translateY(-18px) rotate(-6deg) scale(1.08); }
+      50% { transform: translateY(0) rotate(0deg) scale(1); }
+      75% { transform: translateY(-18px) rotate(6deg) scale(1.08); }
+    }
+    @keyframes rollTrack {
+      0% { transform: translateX(0) rotate(0deg); }
+      60% { transform: translateX(180px) rotate(540deg); }
+      100% { transform: translateX(0) rotate(720deg); }
+    }
+    @keyframes highlightSquare {
+      0%, 100% { transform: scale(1); filter: drop-shadow(0 0 0px #FFCC00); }
+      50% { transform: scale(1.22); filter: drop-shadow(0 0 18px #FFCC00); }
+    }
+    @keyframes popStar {
+      0% { transform: scale(0) rotate(0deg); opacity: 1; }
+      70% { transform: scale(1.3) rotate(180deg); opacity: 1; }
+      100% { transform: scale(0.8) translateY(-60px) rotate(360deg); opacity: 0; }
+    }
+    @keyframes gentleWiggle {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(-7deg); }
+      75% { transform: rotate(7deg); }
+    }
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(255, 204, 0, 0.7); }
+      50% { box-shadow: 0 0 0 16px rgba(255, 204, 0, 0); }
+    }
+
+    .anim-float { animation: floatSlow 3.4s ease-in-out infinite; }
+    .anim-hop { animation: bunnyHop 1.1s ease-in-out infinite; }
+    .anim-dance { animation: celebrateDance 0.85s ease-in-out infinite; }
+    .anim-wiggle { animation: gentleWiggle 0.5s ease-in-out; }
+    .anim-roll { animation: rollTrack 1.35s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .anim-square-pop { animation: highlightSquare 1.2s ease-in-out; }
+    .anim-sun { animation: sunSpin 36s linear infinite; }
+
+    .bunny-talking .bunny-mouth {
+      transform-origin: center;
+      animation: talkMouth 0.24s ease-in-out infinite;
+    }
+    .bunny-waving .bunny-right-arm {
+      transform-origin: 138px 148px;
+      animation: waveArm 0.45s ease-in-out infinite;
+    }
+
+    /* Kéo thả Pointer Events */
+    .draggable-item {
+      touch-action: none;
+      cursor: grab;
+      transition: transform 0.18s ease, filter 0.18s ease;
+    }
+    .draggable-item:active, .draggable-item.dragging {
+      cursor: grabbing;
+      z-index: 999 !important;
+      filter: drop-shadow(0 16px 20px rgba(0,0,0,0.28));
+    }
+    .drop-target-hover {
+      transform: scale(1.08) !important;
+      filter: drop-shadow(0 0 18px #FFCC00) !important;
+    }
+
+    /* Thanh cuộn tinh gọn cho Góc của cô */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: rgba(255,255,255,0.4); border-radius: 10px; }
+    ::-webkit-scrollbar-thumb { background: #38BDF8; border-radius: 10px; }
+  </style>
+</head>
+<body class="select-none text-slate-800">
+
+  <!-- NỀN KHU VƯỜN CỔ TÍCH HOẠT HÌNH 3D XUYÊN SUỐT -->
+  <div id="garden-backdrop" class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+    <!-- Bầu trời & Mặt trời cười -->
+    <div class="absolute top-3 right-4 sm:top-5 sm:right-8 w-24 h-24 sm:w-32 sm:h-32">
+      <svg viewBox="0 0 140 140" class="w-full h-full">
+        <defs>
+          <radialGradient id="sunGrad" cx="40%" cy="40%" r="60%">
+            <stop offset="0%" stop-color="#FFF59D"/>
+            <stop offset="60%" stop-color="#FFD600"/>
+            <stop offset="100%" stop-color="#FF9100"/>
+          </radialGradient>
+        </defs>
+        <g class="anim-sun" style="transform-origin: 70px 70px;">
+          <circle cx="70" cy="70" r="56" fill="none" stroke="#FFE082" stroke-width="10" stroke-dasharray="12 10" stroke-linecap="round"/>
+        </g>
+        <circle cx="70" cy="70" r="42" fill="url(#sunGrad)" stroke="#FFF" stroke-width="3"/>
+        <circle cx="57" cy="63" r="4.5" fill="#4E342E"/>
+        <circle cx="83" cy="63" r="4.5" fill="#4E342E"/>
+        <circle cx="58.5" cy="61.5" r="1.5" fill="#FFF"/>
+        <circle cx="84.5" cy="61.5" r="1.5" fill="#FFF"/>
+        <ellipse cx="49" cy="73" rx="6" ry="3.5" fill="#FF8A80" opacity="0.75"/>
+        <ellipse cx="91" cy="73" rx="6" ry="3.5" fill="#FF8A80" opacity="0.75"/>
+        <path d="M 56 77 Q 70 91 84 77" fill="none" stroke="#4E342E" stroke-width="4" stroke-linecap="round"/>
+      </svg>
+    </div>
+
+    <!-- Cầu vồng lấp lánh -->
+    <svg viewBox="0 0 800 340" class="w-full max-w-5xl mx-auto opacity-85 -mt-4">
+      <defs>
+        <linearGradient id="rbFade" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="white" stop-opacity="0.95"/>
+          <stop offset="100%" stop-color="white" stop-opacity="0.1"/>
+        </linearGradient>
+        <mask id="rbMask">
+          <rect x="0" y="0" width="800" height="340" fill="url(#rbFade)"/>
+        </mask>
+      </defs>
+      <g mask="url(#rbMask)">
+        <path d="M 60 330 A 340 280 0 0 1 740 330" fill="none" stroke="#FF3B30" stroke-width="18"/>
+        <path d="M 78 330 A 322 262 0 0 1 722 330" fill="none" stroke="#FF9500" stroke-width="18"/>
+        <path d="M 96 330 A 304 244 0 0 1 704 330" fill="none" stroke="#FFCC00" stroke-width="18"/>
+        <path d="M 114 330 A 286 226 0 0 1 686 330" fill="none" stroke="#34C759" stroke-width="18"/>
+        <path d="M 132 330 A 268 208 0 0 1 668 330" fill="none" stroke="#007AFF" stroke-width="18"/>
+        <path d="M 150 330 A 250 190 0 0 1 650 330" fill="none" stroke="#AF52DE" stroke-width="18"/>
+      </g>
+    </svg>
+
+    <!-- Mây trắng bồng bềnh -->
+    <div class="absolute top-8 left-0 w-36 opacity-90" style="animation: cloudDrift 48s linear infinite;">
+      <svg viewBox="0 0 180 90"><path d="M35 72 H145 A24 24 0 0 0 142 25 A34 34 0 0 0 78 18 A28 28 0 0 0 35 72 Z" fill="#FFFFFF"/></svg>
+    </div>
+    <div class="absolute top-24 left-0 w-28 opacity-80" style="animation: cloudDrift 65s linear infinite; animation-delay: -22s;">
+      <svg viewBox="0 0 180 90"><path d="M35 72 H145 A24 24 0 0 0 142 25 A34 34 0 0 0 78 18 A28 28 0 0 0 35 72 Z" fill="#FFFFFF"/></svg>
+    </div>
+
+    <!-- Đồi cỏ 3D & Con đường nhỏ cổ tích -->
+    <svg viewBox="0 0 1440 420" preserveAspectRatio="none" class="absolute bottom-0 left-0 w-full h-1/2">
+      <defs>
+        <linearGradient id="hill1" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#A3E635"/>
+          <stop offset="100%" stop-color="#4D7C0F"/>
+        </linearGradient>
+        <linearGradient id="hill2" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#BEF264"/>
+          <stop offset="100%" stop-color="#65A30D"/>
+        </linearGradient>
+        <linearGradient id="pathGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#FDE68A"/>
+          <stop offset="100%" stop-color="#F59E0B"/>
+        </linearGradient>
+      </defs>
+      <path d="M0,120 Q360,20 720,110 T1440,80 L1440,420 L0,420 Z" fill="url(#hill1)"/>
+      <path d="M0,170 Q480,230 960,150 T1440,180 L1440,420 L0,420 Z" fill="url(#hill2)"/>
+      <!-- Con đường uốn lượn -->
+      <path d="M670,175 Q630,270 520,420 L920,420 Q780,270 730,175 Z" fill="url(#pathGrad)" opacity="0.9"/>
+      <!-- Cây cổ tích hai bên -->
+      <g transform="translate(70, 50)">
+        <rect x="38" y="95" width="24" height="65" rx="10" fill="#8D5524"/>
+        <circle cx="50" cy="70" r="46" fill="#4ADE80"/>
+        <circle cx="24" cy="82" r="32" fill="#22C55E"/>
+        <circle cx="76" cy="82" r="32" fill="#22C55E"/>
+        <circle cx="50" cy="45" r="34" fill="#86EFAC"/>
+      </g>
+      <g transform="translate(1260, 45)">
+        <rect x="38" y="95" width="24" height="65" rx="10" fill="#8D5524"/>
+        <circle cx="50" cy="70" r="46" fill="#4ADE80"/>
+        <circle cx="24" cy="82" r="32" fill="#22C55E"/>
+        <circle cx="76" cy="82" r="32" fill="#22C55E"/>
+        <circle cx="50" cy="45" r="34" fill="#86EFAC"/>
+      </g>
+    </svg>
+  </div>
+
+  <!-- LỚP HIỆU ỨNG NGÔI SAO & PHÁO HOA -->
+  <div id="fx-layer" class="fixed inset-0 pointer-events-none z-50 overflow-hidden"></div>
+
+  <!-- THANH ĐIỀU KHIỂN CHUNG TRÊN CÙNG -->
+  <header class="relative z-30 flex flex-wrap items-center justify-between gap-2 px-3 py-2 sm:px-6 sm:py-3">
+    <div class="flex items-center gap-2">
+      <button id="btn-home-top" onclick="goHome()" class="hidden btn-3d bg-white text-sky-700 font-extrabold px-4 py-2.5 sm:px-5 sm:py-3 rounded-2xl border-2 border-sky-200 flex items-center gap-2 text-base sm:text-lg">
+        <span class="text-2xl">🏡</span>
+        <span>Trang chủ</span>
+      </button>
+      <button id="btn-repeat-voice" onclick="repeatCurrentVoice()" class="btn-3d bg-amber-400 text-amber-950 font-extrabold px-4 py-2.5 sm:px-5 sm:py-3 rounded-2xl border-2 border-amber-200 flex items-center gap-2 text-base sm:text-lg">
+        <span class="text-2xl">🗣️</span>
+        <span id="repeat-voice-label">Nghe lại lời chào</span>
+      </button>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <button id="btn-sound-toggle" onclick="toggleSound()" class="btn-3d bg-emerald-500 text-white font-extrabold px-4 py-2.5 sm:px-5 sm:py-3 rounded-2xl border-2 border-emerald-200 flex items-center gap-2 text-base sm:text-lg">
+        <span id="sound-icon" class="text-2xl">🔊</span>
+        <span id="sound-text">Âm thanh: BẬT</span>
+      </button>
+      <button id="btn-teacher-top" onclick="openTeacherCorner()" class="btn-3d bg-indigo-600 text-white font-extrabold px-4 py-2.5 sm:px-5 sm:py-3 rounded-2xl border-2 border-indigo-300 flex items-center gap-2 text-base sm:text-lg">
+        <span class="text-2xl">👩‍🏫</span>
+        <span>Góc của cô</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- KHU VỰC NỘI DUNG CHÍNH -->
+  <main id="app-root" class="relative z-20 max-w-7xl mx-auto px-3 sm:px-6 pb-8">
+
+    <!-- ==================== 1. MÀN HÌNH TRANG CHỦ ==================== -->
+    <section id="view-home" class="flex flex-col items-center">
+      <!-- Bảng tiêu đề khu vườn cổ tích -->
+      <div class="card-3d px-5 py-4 sm:px-10 sm:py-5 text-center max-w-4xl w-full mt-1 mb-4 bg-gradient-to-b from-white via-sky-50 to-amber-50">
+        <h1 class="title-font text-3xl sm:text-5xl md:text-6xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-rose-500 via-amber-500 to-sky-600 drop-shadow-sm">
+          🌈 VƯỜN TRÍ TUỆ CỦA BÉ
+        </h1>
+        <p class="title-font text-xl sm:text-2xl md:text-3xl font-extrabold text-amber-600 mt-1">
+          ✨ Học mà chơi – Chơi mà học ✨
+        </p>
+        <p class="text-xs sm:text-sm font-bold text-slate-500 mt-1">
+          Giáo viên thực hiện: <span class="text-sky-700">Lê Chinh Nhân</span> – Trường Mầm non Giang Thành
+        </p>
+      </div>
+
+      <!-- Sân khấu nhân vật dẫn chương trình Thỏ Trắng & Các bạn -->
+      <div class="w-full max-w-5xl grid grid-cols-1 lg:grid-cols-12 gap-4 items-center mb-5">
+        <!-- Thỏ Trắng 3D dẫn chương trình -->
+        <div class="lg:col-span-5 flex flex-col items-center">
+          <div id="home-bunny-container" onclick="playGreeting()" class="cursor-pointer w-48 h-52 sm:w-56 sm:h-60 flex items-center justify-center">
+            <!-- SVG Thỏ Trắng 3D được render bằng JS -->
+          </div>
+          <div class="bg-white/95 border-3 border-pink-300 rounded-2xl px-4 py-2.5 shadow-md text-center max-w-sm -mt-2">
+            <p id="home-speech-bubble" class="text-sm sm:text-base font-extrabold text-slate-700 leading-snug">
+              "Xin chào các bé yêu! Chào mừng các bé đến với Vườn trí tuệ của bé!"
+            </p>
+          </div>
+        </div>
+
+        <!-- Nút BẮT ĐẦU lớn + Dàn bạn nhỏ khu vườn -->
+        <div class="lg:col-span-7 flex flex-col items-center gap-4">
+          <button onclick="startFirstGame()" style="animation: pulseGlow 2.2s infinite;" class="btn-3d w-full max-w-md bg-gradient-to-b from-rose-500 to-red-600 text-white title-font text-3xl sm:text-4xl font-black py-5 px-8 rounded-3xl border-4 border-yellow-300 flex items-center justify-center gap-3">
+            <span class="text-4xl">🚀</span>
+            <span>BẮT ĐẦU CHƠI</span>
+          </button>
+
+          <!-- Các nhân vật hoạt hình dễ thương trong vườn -->
+          <div class="grid grid-cols-4 gap-2 sm:gap-4 w-full max-w-lg bg-white/75 backdrop-blur-sm p-3 rounded-3xl border-2 border-white shadow-inner">
+            <div class="flex flex-col items-center anim-float" style="animation-delay: 0s;">
+              <div id="home-char-bear" class="w-16 h-16 sm:w-20 sm:h-20"></div>
+              <span class="text-xs sm:text-sm font-extrabold text-amber-900">Gấu Nâu</span>
+            </div>
+            <div class="flex flex-col items-center anim-float" style="animation-delay: 0.4s;">
+              <div id="home-char-duck" class="w-16 h-16 sm:w-20 sm:h-20"></div>
+              <span class="text-xs sm:text-sm font-extrabold text-amber-700">Vịt Vàng</span>
+            </div>
+            <div class="flex flex-col items-center anim-float" style="animation-delay: 0.8s;">
+              <div id="home-char-frog" class="w-16 h-16 sm:w-20 sm:h-20"></div>
+              <span class="text-xs sm:text-sm font-extrabold text-sky-700">Ếch Xanh</span>
+            </div>
+            <div class="flex flex-col items-center anim-float" style="animation-delay: 1.2s;">
+              <div id="home-char-chick" class="w-16 h-16 sm:w-20 sm:h-20"></div>
+              <span class="text-xs sm:text-sm font-extrabold text-orange-600">Gà Con</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5 KHU VỰC TRÒ CHƠI LỚN, DỄ CHẠM -->
+      <div class="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
+        <!-- Game 1 -->
+        <button onclick="launchGame(1)" class="btn-3d bg-gradient-to-b from-rose-400 to-rose-600 text-white p-4 rounded-3xl border-4 border-white flex flex-col items-center text-center">
+          <div class="w-20 h-20 bg-white/95 rounded-2xl flex items-center justify-center mb-2 shadow-inner text-5xl">🍎</div>
+          <span class="bg-white/25 text-xs font-extrabold px-2.5 py-0.5 rounded-full mb-1">Trò chơi 1 (10 lượt)</span>
+          <h3 class="title-font text-lg sm:text-xl font-black leading-tight">BÉ HÁI TÁO VÀO GIỎ SẮC MÀU</h3>
+          <p class="text-xs font-bold text-rose-100 mt-1">Đỏ – Vàng – Xanh</p>
+        </button>
+
+        <!-- Game 2 -->
+        <button onclick="launchGame(2)" class="btn-3d bg-gradient-to-b from-amber-400 to-orange-500 text-white p-4 rounded-3xl border-4 border-white flex flex-col items-center text-center">
+          <div class="w-20 h-20 bg-white/95 rounded-2xl flex items-center justify-center mb-2 shadow-inner text-5xl">🐻</div>
+          <span class="bg-white/25 text-xs font-extrabold px-2.5 py-0.5 rounded-full mb-1">Trò chơi 2 (10 lượt)</span>
+          <h3 class="title-font text-lg sm:text-xl font-black leading-tight">BỮA TIỆC CỦA GẤU TO VÀ THỎ NHỎ</h3>
+          <p class="text-xs font-bold text-amber-100 mt-1">To – Nhỏ</p>
+        </button>
+
+        <!-- Game 3 -->
+        <button onclick="launchGame(3)" class="btn-3d bg-gradient-to-b from-sky-400 to-blue-600 text-white p-4 rounded-3xl border-4 border-white flex flex-col items-center text-center">
+          <div class="w-20 h-20 bg-white/95 rounded-2xl flex items-center justify-center mb-2 shadow-inner text-5xl">🔵</div>
+          <span class="bg-white/25 text-xs font-extrabold px-2.5 py-0.5 rounded-full mb-1">Trò chơi 3 (10 lượt)</span>
+          <h3 class="title-font text-lg sm:text-xl font-black leading-tight">ĐƯỜNG ĐUA CỦA BẠN HÌNH TRÒN</h3>
+          <p class="text-xs font-bold text-sky-100 mt-1">Hình tròn – Hình vuông</p>
+        </button>
+
+        <!-- Game 4 -->
+        <button onclick="launchGame(4)" class="btn-3d bg-gradient-to-b from-purple-400 to-indigo-600 text-white p-4 rounded-3xl border-4 border-white flex flex-col items-center text-center">
+          <div class="w-20 h-20 bg-white/95 rounded-2xl flex items-center justify-center mb-2 shadow-inner text-5xl">🦋</div>
+          <span class="bg-white/25 text-xs font-extrabold px-2.5 py-0.5 rounded-full mb-1">Trò chơi 4 (10 lượt)</span>
+          <h3 class="title-font text-lg sm:text-xl font-black leading-tight">BƯỚM BAY TRÊN CAO – ĐẬU DƯỚI THẤP</h3>
+          <p class="text-xs font-bold text-purple-100 mt-1">Trên – Dưới • Trước – Sau</p>
+        </button>
+
+        <!-- Game 5 -->
+        <button onclick="launchGame(5)" class="btn-3d bg-gradient-to-b from-yellow-400 to-amber-500 text-amber-950 p-4 rounded-3xl border-4 border-white flex flex-col items-center text-center">
+          <div class="w-20 h-20 bg-white/95 rounded-2xl flex items-center justify-center mb-2 shadow-inner text-5xl">🐥</div>
+          <span class="bg-white/60 text-xs font-extrabold px-2.5 py-0.5 rounded-full mb-1">Trò chơi 5 (10 lượt)</span>
+          <h3 class="title-font text-lg sm:text-xl font-black leading-tight">ĐÀN GÀ CON THEO MẸ</h3>
+          <p class="text-xs font-extrabold text-amber-900 mt-1">Một – Nhiều</p>
+        </button>
+      </div>
+    </section>
+
+    <!-- ==================== 2. MÀN HÌNH CHƠI GAME ==================== -->
+    <section id="view-game" class="hidden flex-col items-center">
+      <!-- Thanh chuyển nhanh cả 5 trò chơi để cô và bé dễ chọn bất kỳ trò nào -->
+      <div class="w-full flex flex-wrap items-center justify-center gap-2 mb-2.5">
+        <button onclick="launchGame(1)" id="tab-game-1" class="btn-3d bg-rose-500 text-white font-extrabold px-3.5 py-1.5 rounded-2xl border-2 border-white text-xs sm:text-sm flex items-center gap-1.5">
+          <span>🍎</span><span>1. Màu sắc</span>
+        </button>
+        <button onclick="launchGame(2)" id="tab-game-2" class="btn-3d bg-amber-500 text-white font-extrabold px-3.5 py-1.5 rounded-2xl border-2 border-white text-xs sm:text-sm flex items-center gap-1.5">
+          <span>🐻</span><span>2. To – Nhỏ</span>
+        </button>
+        <button onclick="launchGame(3)" id="tab-game-3" class="btn-3d bg-sky-500 text-white font-extrabold px-3.5 py-1.5 rounded-2xl border-2 border-white text-xs sm:text-sm flex items-center gap-1.5">
+          <span>🔵</span><span>3. Hình dạng</span>
+        </button>
+        <button onclick="launchGame(4)" id="tab-game-4" class="btn-3d bg-purple-500 text-white font-extrabold px-3.5 py-1.5 rounded-2xl border-2 border-white text-xs sm:text-sm flex items-center gap-1.5">
+          <span>🦋</span><span>4. Vị trí</span>
+        </button>
+        <button onclick="launchGame(5)" id="tab-game-5" class="btn-3d bg-yellow-400 text-amber-950 font-extrabold px-3.5 py-1.5 rounded-2xl border-2 border-white text-xs sm:text-sm flex items-center gap-1.5">
+          <span>🐥</span><span>5. Một – Nhiều</span>
+        </button>
+      </div>
+
+      <!-- Thanh tiêu đề trò chơi & Tiến trình ngôi sao (không đếm ngược) -->
+      <div class="card-3d w-full px-4 py-3 mb-3 flex flex-wrap items-center justify-between gap-2">
+        <div class="flex items-center gap-2">
+          <span id="game-badge-icon" class="text-3xl sm:text-4xl">🍎</span>
+          <div>
+            <h2 id="game-title-text" class="title-font text-lg sm:text-2xl font-black text-sky-800">BÉ HÁI TÁO VÀO GIỎ SẮC MÀU</h2>
+            <p id="game-goal-text" class="text-xs sm:text-sm font-bold text-slate-500">Nhận biết màu Đỏ – Vàng – Xanh</p>
+          </div>
+        </div>
+
+        <!-- 10 ngôi sao tiến trình trực quan cho bé -->
+        <div id="star-progress-bar" class="flex items-center gap-1 flex-wrap justify-center bg-sky-50 px-3 py-1.5 rounded-2xl border-2 border-sky-200">
+          <!-- Render 10 ngôi sao bằng JS -->
+        </div>
+
+        <button onclick="restartCurrentGame()" class="btn-3d bg-amber-400 text-amber-950 font-extrabold px-3.5 py-2 rounded-2xl border-2 border-white text-sm sm:text-base flex items-center gap-1">
+          <span>🔄</span>
+          <span>Chơi lại</span>
+        </button>
+      </div>
+
+      <!-- Thỏ Trắng hướng dẫn nhiệm vụ hiện tại -->
+      <div class="w-full max-w-4xl flex items-center gap-3 bg-white/95 border-4 border-pink-300 rounded-3xl px-4 py-2.5 mb-3 shadow-lg">
+        <div id="game-bunny-host" onclick="repeatCurrentVoice()" class="cursor-pointer w-20 h-20 sm:w-24 sm:h-24 shrink-0"></div>
+        <div class="flex-1">
+          <p id="game-instruction-text" class="title-font text-lg sm:text-2xl md:text-3xl font-black text-slate-800 leading-snug">
+            Bé hãy hái quả táo màu đỏ bỏ vào giỏ màu đỏ nhé!
+          </p>
+        </div>
+        <button onclick="repeatCurrentVoice()" aria-label="Nghe lại hướng dẫn" class="btn-3d bg-sky-500 text-white p-3 rounded-2xl text-2xl shrink-0">
+          🔊
+        </button>
+      </div>
+
+      <!-- SÂN KHẤU TƯƠNG TÁC CHÍNH CỦA TỪNG TRÒ CHƠI -->
+      <div id="game-stage" class="card-3d w-full min-h-[410px] sm:min-h-[470px] p-3 sm:p-6 relative overflow-hidden flex flex-col justify-between bg-gradient-to-b from-sky-50/95 to-white/95">
+        <!-- Nội dung từng lượt chơi sẽ được dựng động tại đây -->
+      </div>
+    </section>
+
+    <!-- ==================== 3. MÀN HÌNH HOÀN THÀNH TRÒ CHƠI ==================== -->
+    <section id="view-complete" class="hidden flex-col items-center justify-center py-4">
+      <div class="card-3d max-w-2xl w-full p-6 sm:p-10 text-center bg-gradient-to-b from-amber-50 via-white to-sky-50 relative overflow-hidden">
+        <div class="text-5xl sm:text-6xl mb-2">🌈🎉🏆🎉🌈</div>
+        <h2 class="title-font text-3xl sm:text-5xl font-black text-rose-500 mb-2">
+          HOAN HÔ BÉ YÊU!
+        </h2>
+        <p class="title-font text-xl sm:text-2xl font-extrabold text-sky-700 mb-4">
+          "Chúc mừng bé đã hoàn thành trò chơi!"
+        </p>
+
+        <!-- Dàn nhân vật nhảy múa chúc mừng -->
+        <div class="flex items-end justify-center gap-3 sm:gap-6 my-5">
+          <div id="win-bunny" class="w-28 h-32 anim-dance"></div>
+          <div id="win-bear" class="w-24 h-24 anim-dance" style="animation-delay: 0.2s;"></div>
+          <div id="win-duck" class="w-24 h-24 anim-dance" style="animation-delay: 0.4s;"></div>
+          <div id="win-frog" class="w-24 h-24 anim-dance" style="animation-delay: 0.6s;"></div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-3 mt-6">
+          <button onclick="playNextGame()" id="btn-next-game" class="btn-3d w-full sm:w-auto bg-gradient-to-b from-emerald-400 to-green-600 text-white title-font text-2xl font-black px-7 py-4 rounded-3xl border-4 border-white flex items-center justify-center gap-2">
+            <span>➡️</span>
+            <span>TRÒ TIẾP THEO</span>
+          </button>
+          <button onclick="restartCurrentGame()" class="btn-3d w-full sm:w-auto bg-gradient-to-b from-amber-400 to-orange-500 text-white title-font text-2xl font-black px-7 py-4 rounded-3xl border-4 border-white flex items-center justify-center gap-2">
+            <span>🔄</span>
+            <span>CHƠI LẠI</span>
+          </button>
+          <button onclick="goHome()" class="btn-3d w-full sm:w-auto bg-gradient-to-b from-sky-400 to-blue-600 text-white title-font text-2xl font-black px-7 py-4 rounded-3xl border-4 border-white flex items-center justify-center gap-2">
+            <span>🏡</span>
+            <span>VỀ TRANG CHỦ</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 4. GÓC CỦA CÔ (DÀNH CHO GIÁO VIÊN) ==================== -->
+    <section id="view-teacher" class="hidden flex-col gap-5">
+      <div class="card-3d p-5 sm:p-7 bg-white">
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b-2 border-slate-100 pb-4 mb-5">
+          <div>
+            <span class="bg-indigo-100 text-indigo-700 text-xs font-extrabold px-3 py-1 rounded-full">KHU VỰC DÀNH CHO GIÁO VIÊN MẦM NON</span>
+            <h2 class="title-font text-2xl sm:text-3xl font-black text-indigo-900 mt-1">👩‍🏫 GÓC CỦA CÔ</h2>
+            <p class="text-sm font-bold text-slate-600">Giáo viên thực hiện: <strong>Lê Chinh Nhân</strong> – Trường Mầm non Giang Thành (Độ tuổi: Nhà trẻ 24–36 tháng)</p>
+          </div>
+          <button onclick="goHome()" class="btn-3d bg-sky-500 text-white font-extrabold px-5 py-3 rounded-2xl">
+            🏡 Quay lại Vườn của bé
+          </button>
+        </div>
+
+        <!-- Thống kê số lượt chơi thực tế -->
+        <div class="mb-6">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="title-font text-xl font-black text-slate-800">📊 Thống kê số lượt trải nghiệm trên thiết bị</h3>
+            <button onclick="resetPlayStats()" class="text-xs font-bold text-rose-600 hover:underline px-3 py-1 bg-rose-50 rounded-xl">Đặt lại thống kê</button>
+          </div>
+          <div id="teacher-stats-grid" class="grid grid-cols-2 sm:grid-cols-5 gap-3">
+            <!-- Render bằng JS -->
+          </div>
+        </div>
+
+        <!-- Hướng dẫn sư phạm chi tiết cho 5 nội dung giáo dục -->
+        <div class="mb-6">
+          <h3 class="title-font text-xl font-black text-slate-800 mb-3">📚 Mục tiêu, Nội dung & Hướng dẫn tổ chức hoạt động</h3>
+          <div id="teacher-guides-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Render bằng JS -->
+          </div>
+        </div>
+
+        <!-- Nhật ký quan sát & Nhận xét của giáo viên -->
+        <div class="bg-indigo-50/70 p-4 sm:p-6 rounded-3xl border-2 border-indigo-100">
+          <h3 class="title-font text-xl font-black text-indigo-950 mb-3">📝 Sổ theo dõi & Nhận xét kết quả của giáo viên</h3>
+          <form id="teacher-note-form" onsubmit="saveTeacherNote(event)" class="grid grid-cols-1 sm:grid-cols-12 gap-3 mb-4">
+            <input type="hidden" id="note-edit-id" value="" />
+            <div class="sm:col-span-3">
+              <label class="block text-xs font-extrabold text-slate-600 mb-1">Nhóm / Tên gọi thân mật (tùy chọn)</label>
+              <input id="note-child" type="text" placeholder="VD: Nhóm Hoa Hồng / Bé Bi" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-indigo-200 font-bold text-sm focus:outline-none focus:border-indigo-500" />
+            </div>
+            <div class="sm:col-span-3">
+              <label class="block text-xs font-extrabold text-slate-600 mb-1">Nội dung trò chơi</label>
+              <select id="note-game" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-indigo-200 font-bold text-sm bg-white focus:outline-none focus:border-indigo-500">
+                <option value="1">1. Bé hái táo (Đỏ - Vàng - Xanh)</option>
+                <option value="2">2. Bữa tiệc Gấu & Thỏ (To - Nhỏ)</option>
+                <option value="3">3. Đường đua Hình tròn (Tròn - Vuông)</option>
+                <option value="4">4. Bướm bay cao thấp (Trên/Dưới - Trước/Sau)</option>
+                <option value="5">5. Đàn gà con theo mẹ (Một - Nhiều)</option>
+              </select>
+            </div>
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-extrabold text-slate-600 mb-1">Mức độ đạt được</label>
+              <select id="note-level" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-indigo-200 font-bold text-sm bg-white focus:outline-none focus:border-indigo-500">
+                <option value="Đạt tốt 🌟">Đạt tốt 🌟</option>
+                <option value="Hoàn thành 👍">Hoàn thành 👍</option>
+                <option value="Cần cô hỗ trợ thêm 💛">Cần hỗ trợ thêm 💛</option>
+              </select>
+            </div>
+            <div class="sm:col-span-4 flex flex-col justify-end">
+              <label class="block text-xs font-extrabold text-slate-600 mb-1">Nhận xét sư phạm của cô</label>
+              <div class="flex gap-2">
+                <input id="note-comment" type="text" required placeholder="Ghi nhận sự hứng thú, thao tác của trẻ..." class="w-full px-3.5 py-2.5 rounded-xl border-2 border-indigo-200 font-bold text-sm focus:outline-none focus:border-indigo-500" />
+                <button type="submit" id="note-submit-btn" class="btn-3d bg-indigo-600 text-white font-extrabold px-4 py-2.5 rounded-xl text-sm shrink-0">
+                  Lưu
+                </button>
+              </div>
+            </div>
+          </form>
+
+          <div id="teacher-notes-list" class="space-y-2.5">
+            <!-- Danh sách nhận xét lưu trong localStorage -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    /*************************************************************************
+     * 1. HỆ THỐNG ĐỒ HỌA SVG HOẠT HÌNH 3D (NHÂN VẬT & ĐỒ VẬT ĐA DẠNG)
+     *************************************************************************/
+    const COLORS = {
+      red: { hex: '#FF3B30', light: '#FF8A80', dark: '#C62828', label: 'ĐỎ' },
+      yellow: { hex: '#FFCC00', light: '#FFF59D', dark: '#F57F17', label: 'VÀNG' },
+      blue: { hex: '#007AFF', light: '#82B1FF', dark: '#004ECB', label: 'XANH' } // Tuyệt đối dùng xanh dương và chỉ gọi là XANH
+    };
+
+    function getBunnySVG(idPrefix = 'b1', scaleMode = 'normal') {
+      return `
+        <svg viewBox="0 0 200 220" class="w-full h-full overflow-visible bunny-svg">
+          <defs>
+            <radialGradient id="${idPrefix}-fur" cx="40%" cy="35%" r="65%">
+              <stop offset="0%" stop-color="#FFFFFF"/>
+              <stop offset="75%" stop-color="#F8FAFC"/>
+              <stop offset="100%" stop-color="#E2E8F0"/>
+            </radialGradient>
+            <linearGradient id="${idPrefix}-ear" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#FFB6C1"/>
+              <stop offset="100%" stop-color="#FF69B4"/>
+            </linearGradient>
+            <linearGradient id="${idPrefix}-dress" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#FF6B9D"/>
+              <stop offset="100%" stop-color="#E11D48"/>
+            </linearGradient>
+          </defs>
+          <!-- Bóng đổ dưới chân -->
+          <ellipse cx="100" cy="208" rx="46" ry="10" fill="rgba(0,0,0,0.14)"/>
+          <!-- Tai dài mềm mại -->
+          <g transform="rotate(-10 76 75)">
+            <ellipse cx="74" cy="42" rx="16" ry="42" fill="url(#${idPrefix}-fur)" stroke="#CBD5E1" stroke-width="2.5"/>
+            <ellipse cx="74" cy="44" rx="8" ry="30" fill="url(#${idPrefix}-ear)"/>
+          </g>
+          <g transform="rotate(10 124 75)">
+            <ellipse cx="126" cy="42" rx="16" ry="42" fill="url(#${idPrefix}-fur)" stroke="#CBD5E1" stroke-width="2.5"/>
+            <ellipse cx="126" cy="44" rx="8" ry="30" fill="url(#${idPrefix}-ear)"/>
+          </g>
+          <!-- Thân & Váy hồng 3D -->
+          <path d="M64 142 Q100 128 136 142 L146 192 Q100 204 54 192 Z" fill="url(#${idPrefix}-dress)" stroke="#FFF" stroke-width="2.5"/>
+          <circle cx="100" cy="156" r="6" fill="#FFCC00"/>
+          <!-- Chân -->
+          <ellipse cx="78" cy="198" rx="16" ry="10" fill="url(#${idPrefix}-fur)" stroke="#CBD5E1" stroke-width="2"/>
+          <ellipse cx="122" cy="198" rx="16" ry="10" fill="url(#${idPrefix}-fur)" stroke="#CBD5E1" stroke-width="2"/>
+          <!-- Tay trái -->
+          <ellipse cx="56" cy="158" rx="11" ry="20" transform="rotate(24 56 158)" fill="url(#${idPrefix}-fur)" stroke="#CBD5E1" stroke-width="2"/>
+          <!-- Tay phải vẫy chào -->
+          <g class="bunny-right-arm">
+            <ellipse cx="146" cy="144" rx="11" ry="21" transform="rotate(-35 146 144)" fill="url(#${idPrefix}-fur)" stroke="#CBD5E1" stroke-width="2"/>
+          </g>
+          <!-- Khuôn mặt bầu bĩnh -->
+          <ellipse cx="100" cy="104" rx="46" ry="40" fill="url(#${idPrefix}-fur)" stroke="#CBD5E1" stroke-width="2.5"/>
+          <!-- Nơ xinh trên tai -->
+          <path d="M114 68 L128 60 L126 76 Z M142 68 L128 60 L130 76 Z" fill="#FFCC00" stroke="#F59E0B" stroke-width="1.5"/>
+          <circle cx="128" cy="68" r="4.5" fill="#FF3B30"/>
+          <!-- Đôi mắt to tròn long lanh -->
+          <circle cx="83" cy="99" r="8.5" fill="#1E293B"/>
+          <circle cx="117" cy="99" r="8.5" fill="#1E293B"/>
+          <circle cx="80.5" cy="96" r="3.2" fill="#FFFFFF"/>
+          <circle cx="114.5" cy="96" r="3.2" fill="#FFFFFF"/>
+          <circle cx="85" cy="102" r="1.5" fill="#FFFFFF"/>
+          <circle cx="119" cy="102" r="1.5" fill="#FFFFFF"/>
+          <!-- Má hồng -->
+          <ellipse cx="69" cy="111" rx="8" ry="5" fill="#FDA4AF" opacity="0.8"/>
+          <ellipse cx="131" cy="111" rx="8" ry="5" fill="#FDA4AF" opacity="0.8"/>
+          <!-- Mũi hồng & Miệng cử động khi nói -->
+          <ellipse cx="100" cy="111" rx="5.5" ry="4" fill="#FB7185"/>
+          <ellipse class="bunny-mouth" cx="100" cy="123" rx="8" ry="6" fill="#E11D48"/>
+          <path d="M90 119 Q100 126 110 119" fill="none" stroke="#334155" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+      `;
+    }
+
+    function getCharacterSVG(type, customColor = null) {
+      if (type === 'bear') {
+        const c1 = customColor === 'red' ? '#FF5252' : '#B45309';
+        const c2 = customColor === 'red' ? '#C62828' : '#78350F';
+        return `
+          <svg viewBox="0 0 140 140" class="w-full h-full">
+            <circle cx="38" cy="36" r="18" fill="${c1}" stroke="${c2}" stroke-width="3"/>
+            <circle cx="38" cy="36" r="9" fill="#FDE68A"/>
+            <circle cx="102" cy="36" r="18" fill="${c1}" stroke="${c2}" stroke-width="3"/>
+            <circle cx="102" cy="36" r="9" fill="#FDE68A"/>
+            <ellipse cx="70" cy="98" rx="38" ry="34" fill="${c1}" stroke="${c2}" stroke-width="3"/>
+            <ellipse cx="70" cy="102" rx="22" ry="20" fill="#FDE68A"/>
+            <circle cx="70" cy="58" r="36" fill="${c1}" stroke="${c2}" stroke-width="3"/>
+            <ellipse cx="70" cy="66" rx="16" ry="13" fill="#FEF3C7"/>
+            <circle cx="56" cy="52" r="4.5" fill="#1E293B"/>
+            <circle cx="84" cy="52" r="4.5" fill="#1E293B"/>
+            <circle cx="54.5" cy="50.5" r="1.6" fill="#FFF"/>
+            <circle cx="82.5" cy="50.5" r="1.6" fill="#FFF"/>
+            <ellipse cx="70" cy="61" rx="6" ry="4.5" fill="#3E2723"/>
+            <path d="M62 70 Q70 77 78 70" fill="none" stroke="#3E2723" stroke-width="3" stroke-linecap="round"/>
+          </svg>`;
+      }
+      if (type === 'duck') {
+        return `
+          <svg viewBox="0 0 140 140" class="w-full h-full">
+            <ellipse cx="70" cy="98" rx="36" ry="30" fill="#FFCC00" stroke="#F59E0B" stroke-width="3"/>
+            <circle cx="70" cy="55" r="32" fill="#FFE033" stroke="#F59E0B" stroke-width="3"/>
+            <path d="M64 24 Q70 10 78 24" fill="none" stroke="#F59E0B" stroke-width="4" stroke-linecap="round"/>
+            <circle cx="57" cy="48" r="4.5" fill="#1E293B"/>
+            <circle cx="83" cy="48" r="4.5" fill="#1E293B"/>
+            <circle cx="55.5" cy="46.5" r="1.6" fill="#FFF"/>
+            <circle cx="81.5" cy="46.5" r="1.6" fill="#FFF"/>
+            <ellipse cx="70" cy="62" rx="16" ry="9" fill="#FF6D00" stroke="#E65100" stroke-width="2"/>
+            <path d="M58 62 Q70 68 82 62" fill="none" stroke="#BF360C" stroke-width="2"/>
+          </svg>`;
+      }
+      if (type === 'frog') {
+        // Ếch Xanh sử dụng màu XANH DƯƠNG (#007AFF) đúng quy định màu sắc
+        return `
+          <svg viewBox="0 0 140 140" class="w-full h-full">
+            <ellipse cx="70" cy="100" rx="36" ry="28" fill="#007AFF" stroke="#004ECB" stroke-width="3"/>
+            <ellipse cx="70" cy="102" rx="22" ry="18" fill="#93C5FD"/>
+            <circle cx="48" cy="34" r="15" fill="#007AFF" stroke="#004ECB" stroke-width="3"/>
+            <circle cx="92" cy="34" r="15" fill="#007AFF" stroke="#004ECB" stroke-width="3"/>
+            <circle cx="48" cy="34" r="8" fill="#FFF"/>
+            <circle cx="92" cy="34" r="8" fill="#FFF"/>
+            <circle cx="48" cy="34" r="4.5" fill="#0F172A"/>
+            <circle cx="92" cy="34" r="4.5" fill="#0F172A"/>
+            <ellipse cx="70" cy="62" rx="40" ry="28" fill="#3B82F6" stroke="#004ECB" stroke-width="3"/>
+            <path d="M50 64 Q70 80 90 64" fill="none" stroke="#FFF" stroke-width="3.5" stroke-linecap="round"/>
+          </svg>`;
+      }
+      if (type === 'chick') {
+        return `
+          <svg viewBox="0 0 120 120" class="w-full h-full">
+            <ellipse cx="60" cy="78" rx="30" ry="26" fill="#FFCC00" stroke="#F59E0B" stroke-width="2.5"/>
+            <circle cx="60" cy="45" r="24" fill="#FFE033" stroke="#F59E0B" stroke-width="2.5"/>
+            <circle cx="51" cy="41" r="3.8" fill="#1E293B"/>
+            <circle cx="69" cy="41" r="3.8" fill="#1E293B"/>
+            <polygon points="53,49 67,49 60,59" fill="#FF6D00"/>
+            <path d="M46 104 L46 113 M52 104 L52 113 M68 104 L68 113 M74 104 L74 113" stroke="#EA580C" stroke-width="3" stroke-linecap="round"/>
+          </svg>`;
+      }
+      if (type === 'hen') {
+        return `
+          <svg viewBox="0 0 160 160" class="w-full h-full">
+            <ellipse cx="80" cy="108" rx="48" ry="38" fill="#D97706" stroke="#92400E" stroke-width="3"/>
+            <path d="M50 106 Q36 88 58 88" fill="#F59E0B" stroke="#92400E" stroke-width="2.5"/>
+            <path d="M110 106 Q124 88 102 88" fill="#F59E0B" stroke="#92400E" stroke-width="2.5"/>
+            <circle cx="80" cy="60" r="32" fill="#F59E0B" stroke="#92400E" stroke-width="3"/>
+            <!-- Mào đỏ -->
+            <path d="M66 30 Q72 14 80 26 Q88 14 94 30 Z" fill="#FF3B30"/>
+            <circle cx="68" cy="54" r="4.5" fill="#1E293B"/>
+            <circle cx="92" cy="54" r="4.5" fill="#1E293B"/>
+            <polygon points="71,63 89,63 80,76" fill="#FF6D00"/>
+            <ellipse cx="80" cy="80" rx="6" ry="8" fill="#FF3B30"/>
+          </svg>`;
+      }
+      return '';
+    }
+
+    // Tạo đồ vật SVG 3D sắc nét theo loại và màu sắc (Đỏ - Vàng - Xanh dương)
+    function getItemSVG(itemType, colorKey = 'red') {
+      const c = COLORS[colorKey] || COLORS.red;
+      const uid = 'it_' + Math.random().toString(36).slice(2, 8);
+      const grad = `
+        <defs>
+          <radialGradient id="${uid}" cx="35%" cy="30%" r="70%">
+            <stop offset="0%" stop-color="${c.light}"/>
+            <stop offset="55%" stop-color="${c.hex}"/>
+            <stop offset="100%" stop-color="${c.dark}"/>
+          </radialGradient>
+        </defs>`;
+
+      switch (itemType) {
+        case 'apple':
+          return `<svg viewBox="0 0 120 120" class="w-full h-full">${grad}
+            <path d="M60 28 C60 14 74 10 80 16" fill="none" stroke="#78350F" stroke-width="5" stroke-linecap="round"/>
+            <ellipse cx="74" cy="20" rx="12" ry="6" transform="rotate(-20 74 20)" fill="#FBBF24"/>
+            <path d="M60 34 C34 24 18 48 24 76 C29 98 48 108 60 102 C72 108 91 98 96 76 C102 48 86 24 60 34 Z" fill="url(#${uid})" stroke="#FFF" stroke-width="2.5"/>
+            <ellipse cx="42" cy="52" rx="6" ry="12" transform="rotate(-20 42 52)" fill="rgba(255,255,255,0.45)"/>
+          </svg>`;
+        case 'ball':
+          return `<svg viewBox="0 0 120 120" class="w-full h-full">${grad}
+            <circle cx="60" cy="60" r="44" fill="url(#${uid})" stroke="#FFF" stroke-width="3"/>
+            <path d="M24 44 Q60 66 96 44" fill="none" stroke="rgba(255,255,255,0.65)" stroke-width="5"/>
+            <path d="M24 76 Q60 54 96 76" fill="none" stroke="rgba(255,255,255,0.65)" stroke-width="5"/>
+            <circle cx="44" cy="38" r="8" fill="rgba(255,255,255,0.45)"/>
+          </svg>`;
+        case 'flower':
+          return `<svg viewBox="0 0 120 120" class="w-full h-full">${grad}
+            <circle cx="60" cy="28" r="18" fill="url(#${uid})" stroke="#FFF" stroke-width="2"/>
+            <circle cx="90" cy="50" r="18" fill="url(#${uid})" stroke="#FFF" stroke-width="2"/>
+            <circle cx="78" cy="86" r="18" fill="url(#${uid})" stroke="#FFF" stroke-width="2"/>
+            <circle cx="42" cy="86" r="18" fill="url(#${uid})" stroke="#FFF" stroke-width="2"/>
+            <circle cx="30" cy="50" r="18" fill="url(#${uid})" stroke="#FFF" stroke-width="2"/>
+            <circle cx="60" cy="60" r="18" fill="#FFF59D" stroke="#F59E0B" stroke-width="3"/>
+          </svg>`;
+        case 'umbrella':
+          return `<svg viewBox="0 0 120 120" class="w-full h-full">${grad}
+            <path d="M60 18 L60 94 A10 10 0 0 1 42 94" fill="none" stroke="#78350F" stroke-width="6" stroke-linecap="round"/>
+            <path d="M16 62 A44 40 0 0 1 104 62 Q89 54 75 62 Q60 54 45 62 Q30 54 16 62 Z" fill="url(#${uid})" stroke="#FFF" stroke-width="2.5"/>
+          </svg>`;
+        case 'car':
+          return `<svg viewBox="0 0 120 120" class="w-full h-full">${grad}
+            <path d="M26 64 L38 38 L82 38 L94 64 L106 68 L106 86 L14 86 L14 68 Z" fill="url(#${uid})" stroke="#FFF" stroke-width="2.5"/>
+            <polygon points="42,43 58,43 58,60 33,60" fill="#E0F2FE"/>
+            <polygon points="63,43 78,43 87,60 63,60" fill="#E0F2FE"/>
+            <circle cx="36" cy="88" r="13" fill="#1E293B" stroke="#FFF" stroke-width="2"/>
+            <circle cx="36" cy="88" r="5" fill="#CBD5E1"/>
+            <circle cx="84" cy="88" r="13" fill="#1E293B" stroke="#FFF" stroke-width="2"/>
+            <circle cx="84" cy="88" r="5" fill="#CBD5E1"/>
+          </svg>`;
+        case 'tomato':
+          return `<svg viewBox="0 0 120 120" class="w-full h-full">${grad}
+            <ellipse cx="60" cy="66" rx="42" ry="36" fill="url(#${uid})" stroke="#FFF" stroke-width="2.5"/>
+            <path d="M60 32 L44 22 L54 36 L40 42 L60 40 L80 42 L66 36 L76 22 Z" fill="#FBBF24"/>
+            <ellipse cx="42" cy="56" rx="6" ry="10" fill="rgba(255,255,255,0.45)"/>
+          </svg>`;
+        case 'banana':
+          return `<svg viewBox="0 0 120 120" class="w-full h-full">${grad}
+            <path d="M26 30 Q20 88 94 94 Q74 72 44 26 Z" fill="url(#${uid})" stroke="#FFF" stroke-width="2.5"/>
+            <circle cx="34" cy="26" r="4" fill="#78350F"/>
+            <circle cx="96" cy="94" r="4" fill="#78350F"/>
+          </svg>`;
+        case 'bucket':
+          return `<svg viewBox="0 0 120 120" class="w-full h-full">${grad}
+            <path d="M30 42 A30 24 0 0 1 90 42" fill="none" stroke="#94A3B8" stroke-width="5"/>
+            <polygon points="26,44 94,44 84,102 36,102" fill="url(#${uid})" stroke="#FFF" stroke-width="2.5"/>
+            <ellipse cx="60" cy="44" rx="34" ry="8" fill="${c.light}" stroke="#FFF" stroke-width="2"/>
+          </svg>`;
+        case 'cup':
+          return `<svg viewBox="0 0 120 120" class="w-full h-full">${grad}
+            <path d="M84 48 H98 A12 14 0 0 1 98 76 H82" fill="none" stroke="${c.dark}" stroke-width="8" stroke-linecap="round"/>
+            <path d="M30 38 H86 L80 96 A10 10 0 0 1 70 104 H46 A10 10 0 0 1 36 96 Z" fill="url(#${uid})" stroke="#FFF" stroke-width="2.5"/>
+            <ellipse cx="58" cy="38" rx="28" ry="7" fill="${c.light}" stroke="#FFF" stroke-width="2"/>
+          </svg>`;
+        case 'fish':
+          return `<svg viewBox="0 0 120 120" class="w-full h-full">${grad}
+            <polygon points="84,60 110,36 106,84" fill="${c.dark}" stroke="#FFF" stroke-width="2"/>
+            <ellipse cx="54" cy="60" rx="38" ry="26" fill="url(#${uid})" stroke="#FFF" stroke-width="2.5"/>
+            <circle cx="34" cy="54" r="5" fill="#FFF"/>
+            <circle cx="33" cy="54" r="2.5" fill="#0F172A"/>
+            <path d="M52 46 Q62 60 52 74" fill="none" stroke="rgba(255,255,255,0.65)" stroke-width="3"/>
+          </svg>`;
+        case 'gift':
+          return `<svg viewBox="0 0 120 120" class="w-full h-full">${grad}
+            <rect x="24" y="46" width="72" height="58" rx="10" fill="url(#${uid})" stroke="#FFF" stroke-width="2.5"/>
+            <rect x="18" y="34" width="84" height="16" rx="6" fill="${c.light}" stroke="#FFF" stroke-width="2"/>
+            <rect x="53" y="34" width="14" height="70" fill="#FFF59D"/>
+            <path d="M60 34 C42 16 32 30 56 34 C78 30 68 16 60 34 Z" fill="#FFF59D" stroke="#F59E0B" stroke-width="2"/>
+          </svg>`;
+        case 'balloon':
+          return `<svg viewBox="0 0 120 120" class="w-full h-full">${grad}
+            <path d="M60 84 Q56 98 64 112" fill="none" stroke="#64748B" stroke-width="3" stroke-linecap="round"/>
+            <ellipse cx="60" cy="48" rx="32" ry="38" fill="url(#${uid})" stroke="#FFF" stroke-width="2.5"/>
+            <polygon points="55,85 65,85 60,92" fill="${c.dark}"/>
+            <ellipse cx="47" cy="34" rx="6" ry="12" transform="rotate(-20 47 34)" fill="rgba(255,255,255,0.5)"/>
+          </svg>`;
+        case 'cake':
+          return `<svg viewBox="0 0 120 120" class="w-full h-full">
+            <rect x="22" y="56" width="76" height="44" rx="12" fill="#F472B6" stroke="#FFF" stroke-width="2.5"/>
+            <path d="M22 66 Q35 78 48 66 Q60 78 72 66 Q85 78 98 66 L98 56 L22 56 Z" fill="#FFFBEB"/>
+            <rect x="56" y="30" width="8" height="26" rx="3" fill="#38BDF8"/>
+            <path d="M60 16 Q67 24 60 30 Q53 24 60 16 Z" fill="#FFCC00"/>
+          </svg>`;
+        case 'carrot':
+          return `<svg viewBox="0 0 120 120" class="w-full h-full">
+            <path d="M78 30 C88 14 102 20 88 36 C106 32 106 46 86 44" fill="#FBBF24" stroke="#D97706" stroke-width="2"/>
+            <path d="M84 36 C94 46 42 104 24 100 C18 82 74 26 84 36 Z" fill="#FF6D00" stroke="#FFF" stroke-width="2.5"/>
+          </svg>`;
+        case 'bread':
+          return `<svg viewBox="0 0 120 120" class="w-full h-full">
+            <ellipse cx="60" cy="66" rx="44" ry="26" fill="#F59E0B" stroke="#92400E" stroke-width="3"/>
+            <path d="M38 52 Q46 64 38 74 M60 48 Q68 64 60 76 M82 52 Q90 64 82 74" fill="none" stroke="#FEF3C7" stroke-width="4" stroke-linecap="round"/>
+          </svg>`;
+        case 'watermelon':
+          return `<svg viewBox="0 0 120 120" class="w-full h-full">
+            <path d="M16 52 A44 44 0 0 0 104 52 Z" fill="#007AFF" stroke="#FFF" stroke-width="2.5"/>
+            <path d="M23 52 A37 37 0 0 0 97 52 Z" fill="#FF3B30"/>
+            <circle cx="46" cy="64" r="2.5" fill="#1E293B"/>
+            <circle cx="60" cy="72" r="2.5" fill="#1E293B"/>
+            <circle cx="74" cy="64" r="2.5" fill="#1E293B"/>
+          </svg>`;
+        case 'teddy':
+          return getCharacterSVG('bear');
+        default:
+          return `<svg viewBox="0 0 120 120" class="w-full h-full"><circle cx="60" cy="60" r="42" fill="#FF3B30"/></svg>`;
+      }
+    }
+
+    /*************************************************************************
+     * 2. HỆ THỐNG ÂM THANH TIẾNG VIỆT & NHẠC NỀN WEB AUDIO API
+     *************************************************************************/
+    const AudioEngine = {
+      enabled: true,
+      ctx: null,
+      bgmTimer: null,
+      bgmStep: 0,
+      lastSpeechText: "Xin chào các bé yêu! Chào mừng các bé đến với Vườn trí tuệ của bé! Đây là khu vườn học tập thật vui dành cho các bé nhà trẻ, do cô Lê Chinh Nhân thực hiện. Các bé hãy cùng Thỏ Trắng khám phá những trò chơi thật thú vị nhé! Chúng mình cùng bắt đầu nào!",
+      viVoice: null,
+      ttsAudio: null,
+      ttsQueue: [],
+      speechSessionId: 0,
+
+      init() {
+        const savedSound = localStorage.getItem('vtt_sound_enabled');
+        if (savedSound !== null) {
+          this.enabled = savedSound === 'true';
+        }
+        this.updateSoundUI();
+        this.loadVoices();
+        if ('speechSynthesis' in window) {
+          window.speechSynthesis.onvoiceschanged = () => this.loadVoices();
+        }
+      },
+
+      loadVoices() {
+        if (!('speechSynthesis' in window)) return;
+        const voices = window.speechSynthesis.getVoices();
+        const viVoices = voices.filter(v =>
+          v.lang.toLowerCase().startsWith('vi') ||
+          v.name.toLowerCase().includes('vietnam') ||
+          v.name.toLowerCase().includes('tiếng việt')
+        );
+        // Ưu tiên giọng nữ miền Nam tiếng Việt tự nhiên, to rõ (Hoài My, Linh, Chi...)
+        this.viVoice =
+          viVoices.find(v => /hoaimy|hoài my|miền nam|southern|linh|chi|google tiếng việt|female|nữ/i.test(v.name)) ||
+          viVoices[0] ||
+          null;
+      },
+
+      ensureContext() {
+        if (!this.ctx) {
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          if (AudioCtx) this.ctx = new AudioCtx();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume().catch(() => {});
+        }
+      },
+
+      startBGM() {
+        if (!this.enabled || this.bgmTimer) return;
+        this.ensureContext();
+        const notes = [523.25, 659.25, 783.99, 659.25, 587.33, 698.46, 880.00, 783.99, 659.25, 523.25, 587.33, 523.25];
+        this.bgmTimer = setInterval(() => {
+          if (!this.enabled || !this.ctx) return;
+          const isSpeakingNative = ('speechSynthesis' in window) && window.speechSynthesis.speaking;
+          const isSpeakingTTS = this.ttsAudio && !this.ttsAudio.paused;
+          if (isSpeakingNative || isSpeakingTTS) return;
+          try {
+            const now = this.ctx.currentTime;
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(notes[this.bgmStep % notes.length], now);
+            gain.gain.setValueAtTime(0.001, now);
+            gain.gain.exponentialRampToValueAtTime(0.022, now + 0.05);
+            gain.gain.exponentialRampToValueAtTime(0.0008, now + 0.42);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(now);
+            osc.stop(now + 0.45);
+            this.bgmStep++;
+          } catch (e) {}
+        }, 560);
+      },
+
+      stopBGM() {
+        if (this.bgmTimer) {
+          clearInterval(this.bgmTimer);
+          this.bgmTimer = null;
+        }
+      },
+
+      playTingTing() {
+        if (!this.enabled) return;
+        this.ensureContext();
+        if (!this.ctx) return;
+        const freqs = [880, 1174.66, 1567.98];
+        freqs.forEach((f, idx) => {
+          const now = this.ctx.currentTime + idx * 0.09;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(f, now);
+          gain.gain.setValueAtTime(0.14, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.36);
+        });
+      },
+
+      // Tiếng Gà Mẹ "cục ta cục tác"
+      playChickenCluck() {
+        if (!this.enabled) return;
+        this.ensureContext();
+        if (!this.ctx) return;
+        [0, 0.14, 0.28, 0.44].forEach((offset, i) => {
+          const now = this.ctx.currentTime + offset;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(i === 3 ? 640 : 460, now);
+          osc.frequency.exponentialRampToValueAtTime(300, now + 0.11);
+          gain.gain.setValueAtTime(0.08, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.13);
+        });
+      },
+
+      // Tiếng Gà Con kêu "chiếp chiếp"
+      playChickPeep() {
+        if (!this.enabled) return;
+        this.ensureContext();
+        if (!this.ctx) return;
+        [0, 0.16].forEach((offset) => {
+          const now = this.ctx.currentTime + offset;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(1450, now);
+          osc.frequency.exponentialRampToValueAtTime(1950, now + 0.07);
+          osc.frequency.exponentialRampToValueAtTime(1350, now + 0.12);
+          gain.gain.setValueAtTime(0.09, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.13);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.14);
+        });
+      },
+
+      // Tiếng Vịt kêu "cạp cạp"
+      playDuckQuack() {
+        if (!this.enabled) return;
+        this.ensureContext();
+        if (!this.ctx) return;
+        [0, 0.22].forEach((offset) => {
+          const now = this.ctx.currentTime + offset;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(360, now);
+          osc.frequency.exponentialRampToValueAtTime(240, now + 0.15);
+          gain.gain.setValueAtTime(0.09, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.16);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.17);
+        });
+      },
+
+      playWinFanfare() {
+        if (!this.enabled) return;
+        this.ensureContext();
+        if (!this.ctx) return;
+        const chord = [523.25, 659.25, 783.99, 1046.50, 783.99, 1046.50];
+        chord.forEach((f, i) => {
+          const now = this.ctx.currentTime + i * 0.13;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(f, now);
+          gain.gain.setValueAtTime(0.15, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.46);
+        });
+      },
+
+      stopCurrentSpeech() {
+        this.speechSessionId++;
+        this.ttsQueue = [];
+        if (this.ttsAudio) {
+          try {
+            this.ttsAudio.pause();
+            this.ttsAudio.src = '';
+          } catch (e) {}
+          this.ttsAudio = null;
+        }
+        if ('speechSynthesis' in window) {
+          try {
+            window.speechSynthesis.cancel();
+          } catch (e) {}
+        }
+        setBunnyTalking(false);
+      },
+
+      // Chia câu ngắn <= 140 ký tự để đọc tiếng Việt tự nhiên, không bị ngắt quãng
+      splitVietnameseChunks(text) {
+        if (!text || typeof text !== 'string') return [];
+        const rawSentences = text
+          .replace(/([.!?;:])\s*/g, '$1|')
+          .split('|')
+          .map(s => s.trim())
+          .filter(Boolean);
+
+        const chunks = [];
+        rawSentences.forEach(sentence => {
+          if (sentence.length <= 140) {
+            chunks.push(sentence);
+          } else {
+            const parts = sentence.split(/,\s*/);
+            let current = '';
+            parts.forEach(p => {
+              if ((current + ', ' + p).length <= 140) {
+                current = current ? current + ', ' + p : p;
+              } else {
+                if (current) chunks.push(current);
+                current = p;
+              }
+            });
+            if (current) chunks.push(current);
+          }
+        });
+        return chunks.length ? chunks : [text];
+      },
+
+      // Phát giọng nữ tiếng Việt chuẩn qua Google TTS (dùng khi trình duyệt thiếu gói tiếng Việt)
+      speakViaGoogleTTS(text, sessionId, onStart, onEnd) {
+        const chunks = this.splitVietnameseChunks(text);
+        let idx = 0;
+
+        const playNextChunk = () => {
+          if (!this.enabled || sessionId !== this.speechSessionId) {
+            setBunnyTalking(false);
+            return;
+          }
+          if (idx >= chunks.length) {
+            setBunnyTalking(false);
+            if (onEnd) onEnd();
+            return;
+          }
+
+          const q = encodeURIComponent(chunks[idx]);
+          const url = `https://translate.google.com/translate_tts?ie=UTF-8&tl=vi-VN&client=tw-ob&q=${q}`;
+          const audio = new Audio(url);
+          audio.playbackRate = 0.90; // Tốc độ dịu dàng, to rõ, chậm rãi cho trẻ nhà trẻ
+          audio.volume = 1.0;
+          this.ttsAudio = audio;
+
+          audio.onplay = () => {
+            setBunnyTalking(true);
+            if (idx === 0 && onStart) onStart();
+          };
+          audio.onended = () => {
+            idx++;
+            playNextChunk();
+          };
+          audio.onerror = () => {
+            setBunnyTalking(false);
+            if (onEnd) onEnd();
+          };
+
+          audio.play().catch(() => {
+            setBunnyTalking(false);
+          });
+        };
+
+        playNextChunk();
+      },
+
+      speak(text, onStart = null, onEnd = null) {
+        if (!text || typeof text !== 'string') return;
+        this.lastSpeechText = text;
+        if (!this.enabled) return;
+        this.ensureContext();
+        this.startBGM();
+        this.stopCurrentSpeech();
+
+        const sessionId = this.speechSessionId;
+        this.loadVoices();
+
+        // Chỉ dùng SpeechSynthesis NẾU trình duyệt thực sự có giọng tiếng Việt (vi-VN)
+        // Tuyệt đối KHÔNG bao giờ dùng giọng tiếng Anh đọc văn bản tiếng Việt
+        if ('speechSynthesis' in window && this.viVoice) {
+          try {
+            const utter = new SpeechSynthesisUtterance(text);
+            utter.voice = this.viVoice;
+            utter.lang = 'vi-VN';
+            utter.rate = 0.86;
+            utter.pitch = 1.15;
+            utter.volume = 1.0;
+
+            utter.onstart = () => {
+              if (sessionId !== this.speechSessionId) return;
+              setBunnyTalking(true);
+              if (onStart) onStart();
+            };
+            utter.onend = () => {
+              if (sessionId !== this.speechSessionId) return;
+              setBunnyTalking(false);
+              if (onEnd) onEnd();
+            };
+            utter.onerror = () => {
+              if (sessionId !== this.speechSessionId) return;
+              this.speakViaGoogleTTS(text, sessionId, onStart, onEnd);
+            };
+
+            window.speechSynthesis.speak(utter);
+            return;
+          } catch (e) {}
+        }
+
+        // Mặc định dùng giọng nữ tiếng Việt chuẩn qua Google TTS nếu thiết bị chưa cài gói vi-VN
+        this.speakViaGoogleTTS(text, sessionId, onStart, onEnd);
+      },
+
+      stopAll() {
+        this.stopBGM();
+        this.stopCurrentSpeech();
+      },
+
+      toggle() {
+        this.enabled = !this.enabled;
+        localStorage.setItem('vtt_sound_enabled', String(this.enabled));
+        if (!this.enabled) {
+          this.stopAll();
+        } else {
+          this.startBGM();
+          this.speak(this.lastSpeechText);
+        }
+        this.updateSoundUI();
+      },
+
+      updateSoundUI() {
+        const icon = document.getElementById('sound-icon');
+        const txt = document.getElementById('sound-text');
+        const btn = document.getElementById('btn-sound-toggle');
+        if (this.enabled) {
+          icon.textContent = '🔊';
+          txt.textContent = 'Âm thanh: BẬT';
+          btn.classList.remove('bg-slate-500');
+          btn.classList.add('bg-emerald-500');
+        } else {
+          icon.textContent = '🔇';
+          txt.textContent = 'Âm thanh: TẮT';
+          btn.classList.remove('bg-emerald-500');
+          btn.classList.add('bg-slate-500');
+        }
+      }
+    };
+
+    function setBunnyTalking(isTalking) {
+      document.querySelectorAll('.bunny-svg').forEach(svg => {
+        if (isTalking) {
+          svg.classList.add('bunny-talking', 'bunny-waving');
+        } else {
+          svg.classList.remove('bunny-talking', 'bunny-waving');
+        }
+      });
+    }
+
+    function toggleSound() {
+      AudioEngine.toggle();
+    }
+
+    function repeatCurrentVoice() {
+      AudioEngine.speak(AudioEngine.lastSpeechText);
+    }
+
+    const GREETING_TEXT = "Xin chào các bé yêu! Chào mừng các bé đến với Vườn trí tuệ của bé! Đây là khu vườn học tập thật vui dành cho các bé nhà trẻ, do cô Lê Chinh Nhân thực hiện. Các bé hãy cùng Thỏ Trắng khám phá những trò chơi thật thú vị nhé! Chúng mình cùng bắt đầu nào!";
+
+    function playGreeting() {
+      const homeBunny = document.getElementById('home-bunny-container');
+      if (homeBunny) {
+        homeBunny.classList.add('anim-hop');
+        setTimeout(() => homeBunny.classList.remove('anim-hop'), 3500);
+      }
+      spawnStarsAt(window.innerWidth * 0.35, window.innerHeight * 0.35, 10);
+      AudioEngine.speak(GREETING_TEXT);
+    }
+
+    /*************************************************************************
+     * 3. HIỆU ỨNG HÌNH ẢNH (SAO LẤP LÁNH & PHÁO HOA HOÀN THÀNH)
+     *************************************************************************/
+    function spawnStarsAt(x, y, count = 8) {
+      const layer = document.getElementById('fx-layer');
+      const emojis = ['⭐', '🌟', '✨', '💖'];
+      for (let i = 0; i < count; i++) {
+        const el = document.createElement('div');
+        el.textContent = emojis[i % emojis.length];
+        el.style.position = 'fixed';
+        el.style.left = (x + (Math.random() - 0.5) * 140) + 'px';
+        el.style.top = (y + (Math.random() - 0.5) * 120) + 'px';
+        el.style.fontSize = (24 + Math.random() * 22) + 'px';
+        el.style.animation = 'popStar 1.1s ease-out forwards';
+        layer.appendChild(el);
+        setTimeout(() => el.remove(), 1150);
+      }
+    }
+
+    function launchFireworks() {
+      const layer = document.getElementById('fx-layer');
+      const icons = ['🎆', '🎇', '🌟', '🌈', '✨', '🎈'];
+      for (let b = 0; b < 5; b++) {
+        setTimeout(() => {
+          const cx = window.innerWidth * (0.2 + Math.random() * 0.6);
+          const cy = window.innerHeight * (0.2 + Math.random() * 0.45);
+          for (let i = 0; i < 12; i++) {
+            const el = document.createElement('div');
+            el.textContent = icons[(i + b) % icons.length];
+            el.style.position = 'fixed';
+            el.style.left = (cx + (Math.random() - 0.5) * 260) + 'px';
+            el.style.top = (cy + (Math.random() - 0.5) * 220) + 'px';
+            el.style.fontSize = (28 + Math.random() * 24) + 'px';
+            el.style.animation = 'popStar 1.5s ease-out forwards';
+            layer.appendChild(el);
+            setTimeout(() => el.remove(), 1550);
+          }
+        }, b * 320);
+      }
+    }
+
+    const PRAISES = [
+      "Giỏi quá!",
+      "Hoan hô bé!",
+      "Bé làm đúng rồi!",
+      "Tuyệt vời!",
+      "Thỏ Trắng khen bé!"
+    ];
+    const ENCOURAGEMENTS = [
+      "Bé thử lại nhé!",
+      "Cố lên nào!",
+      "Bé nhìn kỹ nhé!"
+    ];
+
+    function randomFrom(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    function shuffleArray(arr) {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    /*************************************************************************
+     * 4. BỘ DỮ LIỆU 5 TRÒ CHƠI - MỖI TRÒ CHƠI ĐỦ 10 LƯỢT TƯƠNG TÁC THỰC TẾ
+     *************************************************************************/
+    const GAME_META = {
+      1: {
+        title: "🍎 BÉ HÁI TÁO VÀO GIỎ SẮC MÀU",
+        goal: "Nhận biết ba màu: Đỏ – Vàng – Xanh",
+        icon: "🍎",
+        purpose: "Giúp trẻ 24–36 tháng nhận biết và phân biệt ba màu cơ bản: Đỏ, Vàng, Xanh.",
+        guide: "Cô cho trẻ quan sát ba chiếc giỏ màu Đỏ (Gấu Đỏ), Vàng (Vịt Vàng), Xanh (Ếch Xanh). Khuyến khích trẻ gọi tên màu sắc và kéo thả đồ vật vào đúng giỏ.",
+        support: "Nếu trẻ chọn nhầm, cô gợi ý trẻ nhìn màu của bạn Gấu, Vịt hoặc Ếch trên giỏ để đối chiếu."
+      },
+      2: {
+        title: "🐻 BỮA TIỆC CỦA GẤU TO VÀ THỎ NHỎ",
+        goal: "Nhận biết kích thước To – Nhỏ",
+        icon: "🐻",
+        purpose: "Phát triển khả năng so sánh và nhận biết sự khác biệt rõ rệt về kích thước To – Nhỏ.",
+        guide: "Cho trẻ quan sát bạn Gấu To bên trái (đĩa to) và bạn Thỏ Nhỏ bên phải (đĩa nhỏ). Trẻ đưa đồ vật to cho Gấu và đồ vật nhỏ cho Thỏ.",
+        support: "Cô đặt hai đồ vật cạnh nhau và hỏi trẻ: 'Cái nào to? Cái nào nhỏ?' để trẻ tự tay kéo thả."
+      },
+      3: {
+        title: "🔵 ĐƯỜNG ĐUA CỦA BẠN HÌNH TRÒN",
+        goal: "Nhận biết Hình tròn và Hình vuông",
+        icon: "🔵",
+        purpose: "Trẻ nhận biết được hình tròn (lăn được) và hình vuông (có bốn cạnh, bốn góc) thông qua đồ vật quen thuộc.",
+        guide: "Cho trẻ chạm chọn hình tròn hoặc hình vuông theo lời dẫn của Thỏ Trắng, quan sát hiệu ứng lăn tròn và nổi bật bốn góc vuông.",
+        support: "Cô cho trẻ dùng ngón tay vẽ theo đường bao quanh hình trên màn hình để cảm nhận sự khác nhau."
+      },
+      4: {
+        title: "🦋 BƯỚM BAY TRÊN CAO – ĐẬU DƯỚI THẤP",
+        goal: "Nhận biết vị trí Trên – Dưới và Trước – Sau",
+        icon: "🦋",
+        purpose: "Giúp trẻ xác định được vị trí không gian cơ bản: phía trên, phía dưới, phía trước, phía sau so với vật chuẩn.",
+        guide: "Trẻ kéo hoặc chạm vào vùng vị trí theo yêu cầu của Thỏ Trắng (bướm bay trên đầu, dưới chân; cún ở phía trước, phía sau).",
+        support: "Cô kết hợp động tác cơ thể của chính trẻ (giơ tay lên trên, cúi xuống dưới) để trẻ dễ liên hệ."
+      },
+      5: {
+        title: "🐥 ĐÀN GÀ CON THEO MẸ",
+        goal: "Nhận biết số lượng Một – Nhiều",
+        icon: "🐥",
+        purpose: "Trẻ nhận biết sự tương phản trực quan giữa nhóm có 'một' đối tượng và nhóm có 'nhiều' đối tượng (không yêu cầu đếm).",
+        guide: "Cho trẻ quan sát một Gà Mẹ và nhiều Gà Con, thực hiện chạm chọn nhóm hoặc đưa gà con về bên Gà Mẹ.",
+        support: "Cô nhấn mạnh từ 'một' và 'nhiều' khi trẻ thao tác, tuyệt đối không bắt trẻ đếm số lượng."
+      }
+    };
+
+    // Ngân hàng 10 lượt cho Trò chơi 1 (Đỏ - Vàng - Xanh)
+    const G1_ROUNDS = [
+      { type: 'apple', target: 'red', items: ['red', 'yellow', 'blue'], prompt: 'Bé hãy hái quả táo màu đỏ bỏ vào giỏ màu đỏ nhé!' },
+      { type: 'ball', target: 'yellow', items: ['red', 'yellow', 'blue'], prompt: 'Bé hãy đưa quả bóng màu vàng vào giỏ vàng nào!' },
+      { type: 'flower', target: 'blue', items: ['red', 'yellow', 'blue'], prompt: 'Bé hãy chọn bông hoa màu xanh bỏ vào giỏ xanh nhé!' },
+      { type: 'umbrella', target: 'red', items: ['red', 'yellow', 'blue'], prompt: 'Bé hãy tìm chiếc ô màu đỏ bỏ vào giỏ đỏ nào!' },
+      { type: 'car', target: 'blue', items: ['red', 'yellow', 'blue'], prompt: 'Bé hãy đưa chiếc xe màu xanh vào giỏ xanh nhé!' },
+      {
+        target: 'yellow',
+        customItems: [
+          { itemType: 'tomato', color: 'red' },
+          { itemType: 'banana', color: 'yellow' },
+          { itemType: 'bucket', color: 'blue' }
+        ],
+        prompt: 'Bé hãy tìm quả chuối màu vàng bỏ vào giỏ vàng nào!'
+      },
+      { type: 'cup', target: 'red', items: ['red', 'yellow', 'blue'], prompt: 'Bé hãy chọn chiếc cốc màu đỏ bỏ vào giỏ đỏ nhé!' },
+      { type: 'fish', target: 'blue', items: ['red', 'yellow', 'blue'], prompt: 'Bé hãy đưa con cá màu xanh vào giỏ xanh nào!' },
+      { type: 'gift', target: 'yellow', items: ['red', 'yellow', 'blue'], prompt: 'Bé hãy tìm hộp quà màu vàng bỏ vào giỏ vàng nhé!' },
+      { type: 'balloon', target: 'red', items: ['red', 'yellow', 'blue'], prompt: 'Bé hãy hái quả bóng bay màu đỏ bỏ vào giỏ đỏ nào!' }
+    ];
+
+    // Ngân hàng 10 lượt cho Trò chơi 2 (To - Nhỏ)
+    const G2_ROUNDS = [
+      { itemType: 'cake', name: 'bánh ga tô', prompt: 'Bạn Gấu thích bánh ga tô to. Bạn Thỏ thích bánh ga tô nhỏ. Bé hãy giúp hai bạn nhé!' },
+      { itemType: 'apple', name: 'quả táo', prompt: 'Bạn Gấu thích quả táo to. Bạn Thỏ thích quả táo nhỏ. Bé hãy giúp hai bạn nhé!' },
+      { itemType: 'carrot', name: 'củ cà rốt', prompt: 'Bạn Gấu thích củ cà rốt to. Bạn Thỏ thích củ cà rốt nhỏ. Bé hãy giúp hai bạn nhé!' },
+      { itemType: 'ball', name: 'quả bóng', prompt: 'Bạn Gấu thích quả bóng to. Bạn Thỏ thích quả bóng nhỏ. Bé hãy giúp hai bạn nhé!' },
+      { itemType: 'cup', name: 'chiếc cốc', prompt: 'Bạn Gấu thích chiếc cốc to. Bạn Thỏ thích chiếc cốc nhỏ. Bé hãy giúp hai bạn nhé!' },
+      { itemType: 'bread', name: 'chiếc bánh mì', prompt: 'Bạn Gấu thích chiếc bánh mì to. Bạn Thỏ thích chiếc bánh mì nhỏ. Bé hãy giúp hai bạn nhé!' },
+      { itemType: 'fish', name: 'con cá', prompt: 'Bạn Gấu thích con cá to. Bạn Thỏ thích con cá nhỏ. Bé hãy giúp hai bạn nhé!' },
+      { itemType: 'watermelon', name: 'miếng dưa hấu', prompt: 'Bạn Gấu thích miếng dưa hấu to. Bạn Thỏ thích miếng dưa hấu nhỏ. Bé hãy giúp hai bạn nhé!' },
+      { itemType: 'gift', name: 'hộp quà', prompt: 'Bạn Gấu thích hộp quà to. Bạn Thỏ thích hộp quà nhỏ. Bé hãy giúp hai bạn nhé!' },
+      { itemType: 'teddy', name: 'bạn gấu bông', prompt: 'Bạn Gấu thích bạn gấu bông to. Bạn Thỏ thích bạn gấu bông nhỏ. Bé hãy giúp hai bạn nhé!' }
+    ];
+
+    // Ngân hàng 10 lượt cho Trò chơi 3 (Hình tròn - Hình vuông)
+    const G3_ROUNDS = [
+      {
+        target: 'circle',
+        prompt: 'Bé hãy tìm bạn Hình Tròn nhé!',
+        options: [
+          { shape: 'circle', kind: 'basic-circle', color: 'red', label: 'Hình tròn' },
+          { shape: 'square', kind: 'basic-square', color: 'blue', label: 'Hình vuông' }
+        ]
+      },
+      {
+        target: 'circle',
+        prompt: 'Bé hãy tìm chiếc bánh hình tròn nào!',
+        options: [
+          { shape: 'circle', kind: 'pizza', color: 'yellow', label: 'Bánh tròn' },
+          { shape: 'square', kind: 'box', color: 'blue', label: 'Hộp vuông' }
+        ]
+      },
+      {
+        target: 'circle',
+        prompt: 'Bé hãy chạm vào quả bóng hình tròn nhé!',
+        options: [
+          { shape: 'circle', kind: 'ball', color: 'red', label: 'Bóng tròn' },
+          { shape: 'square', kind: 'napkin', color: 'yellow', label: 'Khăn vuông' }
+        ]
+      },
+      {
+        target: 'square',
+        prompt: 'Bé hãy tìm bạn Hình Vuông có bốn góc nhé!',
+        options: [
+          { shape: 'square', kind: 'basic-square', color: 'blue', label: 'Hình vuông' },
+          { shape: 'circle', kind: 'basic-circle', color: 'red', label: 'Hình tròn' }
+        ]
+      },
+      {
+        target: 'square',
+        prompt: 'Bé hãy tìm chiếc khăn hình vuông nào!',
+        options: [
+          { shape: 'square', kind: 'napkin', color: 'yellow', label: 'Khăn vuông' },
+          { shape: 'circle', kind: 'plate', color: 'red', label: 'Đĩa tròn' }
+        ]
+      },
+      {
+        target: 'square',
+        prompt: 'Bé hãy chạm vào chiếc hộp hình vuông nhé!',
+        options: [
+          { shape: 'square', kind: 'box', color: 'red', label: 'Hộp vuông' },
+          { shape: 'circle', kind: 'ball', color: 'blue', label: 'Bóng tròn' }
+        ]
+      },
+      {
+        target: 'circle',
+        prompt: 'Bé hãy chọn hình tròn giữa hai hình nhé!',
+        options: [
+          { shape: 'circle', kind: 'basic-circle', color: 'yellow', label: 'Hình tròn' },
+          { shape: 'square', kind: 'basic-square', color: 'blue', label: 'Hình vuông' }
+        ]
+      },
+      {
+        target: 'square',
+        prompt: 'Bé hãy chọn hình vuông nào!',
+        options: [
+          { shape: 'square', kind: 'basic-square', color: 'red', label: 'Hình vuông' },
+          { shape: 'triangle', kind: 'triangle', color: 'yellow', label: 'Hình tam giác' }
+        ]
+      },
+      {
+        target: 'circle',
+        prompt: 'Bé hãy tìm hình tròn trong nhóm hình nhé!',
+        options: [
+          { shape: 'circle', kind: 'basic-circle', color: 'red', label: 'Hình tròn' },
+          { shape: 'square', kind: 'basic-square', color: 'blue', label: 'Hình vuông' },
+          { shape: 'triangle', kind: 'triangle', color: 'yellow', label: 'Hình tam giác' }
+        ]
+      },
+      {
+        target: 'square',
+        prompt: 'Bé hãy tìm hình vuông trong nhóm hình nào!',
+        options: [
+          { shape: 'square', kind: 'basic-square', color: 'blue', label: 'Hình vuông' },
+          { shape: 'circle', kind: 'basic-circle', color: 'yellow', label: 'Hình tròn' },
+          { shape: 'triangle', kind: 'triangle', color: 'red', label: 'Hình tam giác' }
+        ]
+      }
+    ];
+
+    // Ngân hàng 10 lượt cho Trò chơi 4 (Vị trí Trên - Dưới và Trước - Sau)
+    const G4_ROUNDS = [
+      { mode: 'top-bottom', targetZone: 'top', anchor: 'kid', mover: 'butterfly', prompt: 'Bé hãy đưa bướm lên phía trên đầu em bé!' },
+      { mode: 'top-bottom', targetZone: 'bottom', anchor: 'kid', mover: 'butterfly', prompt: 'Bé hãy đưa bướm xuống phía dưới gần chân em bé!' },
+      { mode: 'top-bottom', targetZone: 'top', anchor: 'table', mover: 'ball', prompt: 'Bé hãy đưa quả bóng lên phía trên chiếc bàn!' },
+      { mode: 'top-bottom', targetZone: 'top', anchor: 'branch', mover: 'bird', prompt: 'Bé hãy đưa con chim lên phía trên cành cây!' },
+      { mode: 'top-bottom', targetZone: 'bottom', anchor: 'leaf', mover: 'flower', prompt: 'Bé hãy đưa bông hoa xuống phía dưới chiếc lá!' },
+      { mode: 'front-back', targetZone: 'front', anchor: 'kid', mover: 'puppy', prompt: 'Bé hãy đưa Cún Con ra phía trước em bé!' },
+      { mode: 'front-back', targetZone: 'back', anchor: 'kid', mover: 'puppy', prompt: 'Bé hãy đưa Cún Con ra phía sau em bé!' },
+      { mode: 'front-back', targetZone: 'front', anchor: 'chair', mover: 'ball', prompt: 'Bé hãy đặt quả bóng phía trước chiếc ghế!' },
+      { mode: 'front-back', targetZone: 'back', anchor: 'box', mover: 'bear', prompt: 'Bé hãy đặt con gấu phía sau chiếc hộp!' },
+      { mode: 'front-back', targetZone: 'front', anchor: 'house', mover: 'car', prompt: 'Bé hãy đặt chiếc xe phía trước ngôi nhà!' }
+    ];
+
+    // Ngân hàng 10 lượt cho Trò chơi 5 (Một - Nhiều, KHÔNG chữ số, KHÔNG đếm, hình ảnh khớp 100% câu hỏi)
+    const G5_ROUNDS = [
+      // Lượt 1: Một Gà Mẹ và nhiều Gà Con
+      {
+        mode: 'choose',
+        targetGroup: 'many',
+        sound: 'chicken',
+        singleVisual: 'hen',
+        singleLabel: 'MỘT GÀ MẸ',
+        manyVisual: 'chick',
+        manyLabel: 'NHIỀU GÀ CON',
+        prompt: 'Một Gà Mẹ và nhiều Gà Con! Bé hãy chạm vào nhóm có nhiều Gà Con nhé!'
+      },
+      // Lượt 2: Đưa một bạn Gà Con về cạnh Gà Mẹ -> Xuất hiện đúng 1 bạn Gà Con
+      {
+        mode: 'gather',
+        requiredCount: 1,
+        availableCount: 1,
+        sound: 'chicken',
+        momVisual: 'hen',
+        momLabel: 'MỘT GÀ MẸ',
+        babyVisual: 'chick',
+        prompt: 'Bé hãy đưa một bạn Gà Con về cạnh Gà Mẹ nhé!'
+      },
+      // Lượt 3: Đưa nhiều bạn Gà Con về cạnh Gà Mẹ -> Xuất hiện đàn nhiều bạn Gà Con
+      {
+        mode: 'gather',
+        requiredCount: 5,
+        availableCount: 5,
+        sound: 'chicken',
+        momVisual: 'hen',
+        momLabel: 'MỘT GÀ MẸ',
+        babyVisual: 'chick',
+        prompt: 'Bé hãy đưa nhiều bạn Gà Con về cạnh Gà Mẹ nhé!'
+      },
+      // Lượt 4: Một con vịt và nhiều con vịt -> Xuất hiện đúng hình con Vịt Vàng khớp 100%
+      {
+        mode: 'choose',
+        targetGroup: 'many',
+        sound: 'duck',
+        singleVisual: 'duck',
+        singleLabel: 'MỘT CON VỊT',
+        manyVisual: 'duck',
+        manyLabel: 'NHIỀU CON VỊT',
+        prompt: 'Bé hãy quan sát một con vịt và nhiều con vịt, rồi chạm vào nhóm có nhiều con vịt nhé!'
+      },
+      // Lượt 5: Đưa một bạn Thỏ Con về cạnh Thỏ Mẹ -> Xuất hiện Thỏ Mẹ và 1 bạn Thỏ Con
+      {
+        mode: 'gather',
+        requiredCount: 1,
+        availableCount: 1,
+        sound: 'bunny',
+        momVisual: 'bunny',
+        momLabel: 'MỘT THỎ MẸ',
+        babyVisual: 'bunny',
+        prompt: 'Bé hãy đưa một bạn Thỏ Con về cạnh Thỏ Mẹ nhé!'
+      },
+      // Lượt 6: Đưa nhiều bạn Thỏ Con về cạnh Thỏ Mẹ -> Xuất hiện Thỏ Mẹ và nhiều bạn Thỏ Con
+      {
+        mode: 'gather',
+        requiredCount: 5,
+        availableCount: 5,
+        sound: 'bunny',
+        momVisual: 'bunny',
+        momLabel: 'MỘT THỎ MẸ',
+        babyVisual: 'bunny',
+        prompt: 'Bé hãy đưa nhiều bạn Thỏ Con về cạnh Thỏ Mẹ nhé!'
+      },
+      // Lượt 7: Một con bướm và nhiều con bướm -> Xuất hiện hình con Bướm khớp 100%
+      {
+        mode: 'choose',
+        targetGroup: 'many',
+        sound: 'ting',
+        singleVisual: 'butterfly',
+        singleLabel: 'MỘT CON BƯỚM',
+        manyVisual: 'butterfly',
+        manyLabel: 'NHIỀU CON BƯỚM',
+        prompt: 'Bé hãy chạm vào nhóm có nhiều con bướm nhé!'
+      },
+      // Lượt 8: Một quả bóng và nhiều quả bóng -> Xuất hiện hình Quả Bóng khớp 100%
+      {
+        mode: 'choose',
+        targetGroup: 'many',
+        sound: 'ting',
+        singleVisual: 'ball',
+        singleLabel: 'MỘT QUẢ BÓNG',
+        manyVisual: 'ball',
+        manyLabel: 'NHIỀU QUẢ BÓNG',
+        prompt: 'Bé hãy chạm vào nhóm có nhiều quả bóng nhé!'
+      },
+      // Lượt 9: Một bông hoa và nhiều bông hoa -> Xuất hiện hình Bông Hoa khớp 100%
+      {
+        mode: 'choose',
+        targetGroup: 'many',
+        sound: 'ting',
+        singleVisual: 'flower',
+        singleLabel: 'MỘT BÔNG HOA',
+        manyVisual: 'flower',
+        manyLabel: 'NHIỀU BÔNG HOA',
+        prompt: 'Bé hãy chạm vào nhóm có nhiều bông hoa nhé!'
+      },
+      // Lượt 10: Một Gà Mẹ và cả đàn nhiều Gà Con
+      {
+        mode: 'choose',
+        targetGroup: 'many',
+        sound: 'chicken',
+        singleVisual: 'hen',
+        singleLabel: 'MỘT GÀ MẸ',
+        manyVisual: 'chick',
+        manyLabel: 'NHIỀU GÀ CON',
+        finalCelebration: true,
+        prompt: 'Một Gà Mẹ và cả đàn nhiều Gà Con! Bé hãy chạm vào đàn nhiều Gà Con nhé!'
+      }
+    ];
+
+    /*************************************************************************
+     * 5. QUẢN LÝ TRẠNG THÁI ỨNG DỤNG & KÉO THẢ POINTER EVENTS
+     *************************************************************************/
+    const State = {
+      currentView: 'home',
+      currentGameId: 1,
+      roundIndex: 0,
+      roundsData: [],
+      roundLocked: false,
+      g2DoneBig: false,
+      g2DoneSmall: false,
+      g5GatheredCount: 0
+    };
+
+    function showView(viewName) {
+      State.currentView = viewName;
+      ['home', 'game', 'complete', 'teacher'].forEach(v => {
+        const el = document.getElementById('view-' + v);
+        if (el) {
+          if (v === viewName) {
+            el.classList.remove('hidden');
+            el.classList.add('flex');
+          } else {
+            el.classList.add('hidden');
+            el.classList.remove('flex');
+          }
+        }
+      });
+
+      const btnHomeTop = document.getElementById('btn-home-top');
+      const repeatLabel = document.getElementById('repeat-voice-label');
+      if (viewName === 'home') {
+        btnHomeTop.classList.add('hidden');
+        repeatLabel.textContent = 'Nghe lại lời chào';
+      } else {
+        btnHomeTop.classList.remove('hidden');
+        repeatLabel.textContent = 'Nghe lại hướng dẫn';
+      }
+    }
+
+    function goHome() {
+      showView('home');
+      AudioEngine.speak("Chúng mình cùng chọn trò chơi trong Vườn trí tuệ của bé nhé!");
+    }
+
+    function startFirstGame() {
+      launchGame(1);
+    }
+
+    function launchGame(gameId) {
+      State.currentGameId = gameId;
+      State.roundIndex = 0;
+      State.roundLocked = false;
+
+      // Đánh dấu nổi bật tab trò chơi đang mở trên thanh điều hướng nhanh
+      [1, 2, 3, 4, 5].forEach(id => {
+        const tab = document.getElementById(`tab-game-${id}`);
+        if (tab) {
+          if (id === gameId) {
+            tab.classList.add('ring-4', 'ring-yellow-300', 'scale-105');
+          } else {
+            tab.classList.remove('ring-4', 'ring-yellow-300', 'scale-105');
+          }
+        }
+      });
+
+      // Xây dựng 10 lượt thực tế (giữ nguyên tiến trình sư phạm, có thể xáo trộn vị trí đối tượng)
+      if (gameId === 1) State.roundsData = [...G1_ROUNDS];
+      if (gameId === 2) State.roundsData = [...G2_ROUNDS];
+      if (gameId === 3) State.roundsData = [...G3_ROUNDS];
+      if (gameId === 4) State.roundsData = [...G4_ROUNDS];
+      if (gameId === 5) State.roundsData = [...G5_ROUNDS];
+
+      const meta = GAME_META[gameId];
+      document.getElementById('game-badge-icon').textContent = meta.icon;
+      document.getElementById('game-title-text').textContent = meta.title;
+      document.getElementById('game-goal-text').textContent = meta.goal;
+
+      showView('game');
+      renderStarProgress();
+      renderCurrentRound();
+    }
+
+    function playNextGame() {
+      const nextId = State.currentGameId < 5 ? State.currentGameId + 1 : 1;
+      launchGame(nextId);
+    }
+
+    function restartCurrentGame() {
+      launchGame(State.currentGameId);
+    }
+
+    function renderStarProgress() {
+      const bar = document.getElementById('star-progress-bar');
+      let html = '';
+      for (let i = 0; i < 10; i++) {
+        const done = i < State.roundIndex;
+        const active = i === State.roundIndex;
+        html += `<span class="text-xl sm:text-2xl transition-transform ${done ? 'scale-110' : active ? 'animate-bounce' : 'opacity-30 grayscale'}">⭐</span>`;
+      }
+      bar.innerHTML = html;
+    }
+
+    function setInstruction(text, autoSpeak = true) {
+      document.getElementById('game-instruction-text').textContent = text;
+      if (autoSpeak) {
+        AudioEngine.speak(text);
+      } else {
+        AudioEngine.lastSpeechText = text;
+      }
+    }
+
+    function handleCorrectStep(customPraise = null, stayOnRound = false) {
+      AudioEngine.playTingTing();
+      const bunnyHost = document.getElementById('game-bunny-host');
+      if (bunnyHost) {
+        bunnyHost.classList.add('anim-dance');
+        setTimeout(() => bunnyHost.classList.remove('anim-dance'), 1300);
+      }
+      spawnStarsAt(window.innerWidth * 0.5, window.innerHeight * 0.48, 12);
+
+      if (stayOnRound) {
+        const praise = customPraise || randomFrom(PRAISES);
+        AudioEngine.speak(praise);
+        return;
+      }
+
+      State.roundLocked = true;
+      const praise = customPraise || randomFrom(PRAISES);
+      AudioEngine.speak(praise);
+
+      setTimeout(() => {
+        State.roundIndex++;
+        renderStarProgress();
+        if (State.roundIndex >= 10) {
+          completeGame();
+        } else {
+          State.roundLocked = false;
+          renderCurrentRound();
+        }
+      }, 1750);
+    }
+
+    function handleWrongStep(customEncourage = null) {
+      const msg = customEncourage || randomFrom(ENCOURAGEMENTS);
+      AudioEngine.speak(msg);
+    }
+
+    function completeGame() {
+      incrementPlayStat(State.currentGameId);
+      showView('complete');
+      AudioEngine.playWinFanfare();
+      launchFireworks();
+      setTimeout(() => {
+        AudioEngine.speak("Chúc mừng bé đã hoàn thành trò chơi! Bé giỏi quá!");
+      }, 450);
+    }
+
+    // Bộ hỗ trợ Kéo & Thả đa thiết bị (Pointer Events) + Chạm chọn thân thiện trẻ 24-36 tháng
+    function makeDraggable(el, { onDropCheck, onTapFallback = null }) {
+      let startX = 0, startY = 0, origX = 0, origY = 0;
+      let isDragging = false;
+      let moved = false;
+
+      el.addEventListener('pointerdown', (e) => {
+        if (State.roundLocked || el.dataset.done === 'true') return;
+        e.preventDefault();
+        el.setPointerCapture(e.pointerId);
+        isDragging = true;
+        moved = false;
+        startX = e.clientX;
+        startY = e.clientY;
+        const rect = el.getBoundingClientRect();
+        origX = rect.left + rect.width / 2;
+        origY = rect.top + rect.height / 2;
+        el.style.transition = 'none';
+        el.classList.add('dragging');
+      });
+
+      el.addEventListener('pointermove', (e) => {
+        if (!isDragging) return;
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
+        if (Math.abs(dx) > 6 || Math.abs(dy) > 6) moved = true;
+        el.style.transform = `translate(${dx}px, ${dy}px) scale(1.12)`;
+
+        // Làm nổi bật vùng thả khi kéo lại gần
+        document.querySelectorAll('.drop-zone').forEach(zone => {
+          const zr = zone.getBoundingClientRect();
+          if (e.clientX >= zr.left && e.clientX <= zr.right && e.clientY >= zr.top && e.clientY <= zr.bottom) {
+            zone.classList.add('drop-target-hover');
+          } else {
+            zone.classList.remove('drop-target-hover');
+          }
+        });
+      });
+
+      const endDrag = (e) => {
+        if (!isDragging) return;
+        isDragging = false;
+        el.classList.remove('dragging');
+        document.querySelectorAll('.drop-zone').forEach(z => z.classList.remove('drop-target-hover'));
+
+        if (!moved && onTapFallback) {
+          el.style.transition = 'transform 0.3s ease';
+          el.style.transform = 'translate(0px, 0px)';
+          onTapFallback(el);
+          return;
+        }
+
+        const matchedZone = onDropCheck(e.clientX, e.clientY, el);
+        if (!matchedZone) {
+          // Quay về vị trí ban đầu mượt mà
+          el.style.transition = 'transform 0.38s cubic-bezier(0.34, 1.56, 0.64, 1)';
+          el.style.transform = 'translate(0px, 0px)';
+        }
+      };
+
+      el.addEventListener('pointerup', endDrag);
+      el.addEventListener('pointercancel', endDrag);
+    }
+
+    /*************************************************************************
+     * 6. RENDER CHI TIẾT TỪNG TRÒ CHƠI (10 LƯỢT ĐA DẠNG)
+     *************************************************************************/
+    function renderCurrentRound() {
+      const stage = document.getElementById('game-stage');
+      const r = State.roundsData[State.roundIndex];
+      setInstruction(r.prompt, true);
+
+      if (State.currentGameId === 1) renderGame1Round(stage, r);
+      if (State.currentGameId === 2) renderGame2Round(stage, r);
+      if (State.currentGameId === 3) renderGame3Round(stage, r);
+      if (State.currentGameId === 4) renderGame4Round(stage, r);
+      if (State.currentGameId === 5) renderGame5Round(stage, r);
+    }
+
+    /* ---------------- TRÒ CHƠI 1: BÉ HÁI TÁO VÀO GIỎ SẮC MÀU ---------------- */
+    function renderGame1Round(stage, r) {
+      const itemList = r.customItems
+        ? shuffleArray(r.customItems)
+        : shuffleArray(r.items.map(col => ({ itemType: r.type, color: col })));
+
+      stage.innerHTML = `
+        <!-- Tán cây cổ tích chứa 3 đồ vật sắc màu -->
+        <div class="relative w-full rounded-3xl bg-gradient-to-b from-sky-200 via-emerald-200 to-emerald-400 border-4 border-emerald-500/40 p-4 sm:p-6 flex flex-col items-center">
+          <div class="text-xs sm:text-sm font-extrabold text-emerald-950 bg-white/80 px-4 py-1 rounded-full mb-3">
+            Kéo đồ vật màu <span class="text-rose-600 underline">${COLORS[r.target].label}</span> thả vào giỏ tương ứng nhé!
+          </div>
+          <div class="grid grid-cols-3 gap-4 sm:gap-10 w-full max-w-2xl place-items-center py-2">
+            ${itemList.map((it, idx) => `
+              <div id="g1-item-${idx}" data-color="${it.color}" class="draggable-item w-24 h-24 sm:w-32 sm:h-32 bg-white/85 rounded-3xl p-2 shadow-lg border-4 border-white flex items-center justify-center">
+                ${getItemSVG(it.itemType, it.color)}
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <!-- Ba chiếc giỏ màu Đỏ (Gấu Đỏ), Vàng (Vịt Vàng), Xanh (Ếch Xanh) -->
+        <div class="grid grid-cols-3 gap-3 sm:gap-6 w-full max-w-4xl mx-auto mt-4">
+          ${[
+            { color: 'red', char: 'bear', title: 'GIỎ ĐỎ', bg: 'from-rose-500 to-red-700', border: 'border-rose-300' },
+            { color: 'yellow', char: 'duck', title: 'GIỎ VÀNG', bg: 'from-yellow-400 to-amber-500', border: 'border-yellow-200' },
+            { color: 'blue', char: 'frog', title: 'GIỎ XANH', bg: 'from-sky-400 to-blue-700', border: 'border-sky-200' }
+          ].map(b => `
+            <div data-basket-color="${b.color}" class="drop-zone transition-transform duration-200 rounded-3xl bg-gradient-to-b ${b.bg} border-4 ${b.border} p-2 sm:p-4 flex flex-col items-center shadow-xl">
+              <div class="w-16 h-16 sm:w-24 sm:h-24 -mt-6 sm:-mt-8 drop-shadow">
+                ${getCharacterSVG(b.char, b.color === 'red' ? 'red' : null)}
+              </div>
+              <div class="w-full h-14 sm:h-16 bg-amber-900/35 rounded-2xl border-2 border-dashed border-white/80 flex items-center justify-center mt-1">
+                <span class="title-font text-white text-base sm:text-xl font-black tracking-wide drop-shadow">${b.title}</span>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+
+      // Gắn sự kiện kéo thả cho từng đồ vật
+      itemList.forEach((_, idx) => {
+        const el = document.getElementById(`g1-item-${idx}`);
+        makeDraggable(el, {
+          onDropCheck: (x, y, draggedEl) => {
+            const zones = document.querySelectorAll('[data-basket-color]');
+            let hitBasket = null;
+            zones.forEach(z => {
+              const rect = z.getBoundingClientRect();
+              if (x >= rect.left - 15 && x <= rect.right + 15 && y >= rect.top - 15 && y <= rect.bottom + 15) {
+                hitBasket = z;
+              }
+            });
+
+            if (!hitBasket) return false;
+
+            const itemColor = draggedEl.dataset.color;
+            const basketColor = hitBasket.dataset.basketColor;
+
+            if (itemColor === r.target && basketColor === r.target) {
+              draggedEl.dataset.done = 'true';
+              draggedEl.style.transition = 'all 0.35s ease';
+              draggedEl.style.opacity = '0';
+              draggedEl.style.transform = 'scale(0.3)';
+              hitBasket.classList.add('anim-dance');
+              handleCorrectStep();
+              return true;
+            } else {
+              draggedEl.classList.add('anim-wiggle');
+              setTimeout(() => draggedEl.classList.remove('anim-wiggle'), 500);
+              handleWrongStep("Bé thử lại nhé!");
+              return false;
+            }
+          }
+        });
+      });
+    }
+
+    /* ---------------- TRÒ CHƠI 2: BỮA TIỆC CỦA GẤU TO VÀ THỎ NHỎ ---------------- */
+    function renderGame2Round(stage, r) {
+      State.g2DoneBig = false;
+      State.g2DoneSmall = false;
+
+      const pair = shuffleArray([
+        { size: 'big', scaleClass: 'w-32 h-32 sm:w-44 sm:h-44', label: 'TO' },
+        { size: 'small', scaleClass: 'w-16 h-16 sm:w-20 sm:h-20', label: 'NHỎ' }
+      ]);
+
+      stage.innerHTML = `
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center w-full my-auto">
+          <!-- Gấu To bên trái có đĩa to -->
+          <div data-plate-size="big" class="drop-zone md:col-span-4 bg-amber-100/90 border-4 border-amber-400 rounded-3xl p-4 flex flex-col items-center shadow-lg transition-transform">
+            <div class="w-28 h-28 sm:w-36 sm:h-36" id="g2-bear-char">
+              ${getCharacterSVG('bear')}
+            </div>
+            <span class="title-font text-xl sm:text-2xl font-black text-amber-900 mb-2">GẤU TO</span>
+            <div id="g2-plate-big" class="w-40 h-24 sm:w-48 sm:h-28 rounded-full bg-white border-4 border-amber-500 shadow-inner flex items-center justify-center">
+              <span class="text-xs sm:text-sm font-extrabold text-amber-600">Đĩa của Gấu To</span>
+            </div>
+          </div>
+
+          <!-- Bàn ăn ở giữa đặt 1 cặp đồ vật To - Nhỏ -->
+          <div class="md:col-span-4 bg-gradient-to-b from-orange-100 to-amber-200 border-4 border-white rounded-3xl p-4 flex flex-col items-center justify-center min-h-[220px] shadow-inner">
+            <span class="text-xs font-extrabold text-amber-900 bg-white/80 px-3 py-1 rounded-full mb-3">Kéo đồ vật vào đúng đĩa nhé!</span>
+            <div class="flex items-center justify-around w-full gap-2">
+              ${pair.map((p, idx) => `
+                <div id="g2-item-${idx}" data-size="${p.size}" class="draggable-item ${p.scaleClass} bg-white/90 rounded-3xl p-2 border-4 border-amber-300 shadow-md flex items-center justify-center">
+                  ${getItemSVG(r.itemType, p.size === 'big' ? 'red' : 'yellow')}
+                </div>
+              `).join('')}
+            </div>
+          </div>
+
+          <!-- Thỏ Nhỏ bên phải có đĩa nhỏ -->
+          <div data-plate-size="small" class="drop-zone md:col-span-4 bg-pink-100/90 border-4 border-pink-400 rounded-3xl p-4 flex flex-col items-center shadow-lg transition-transform">
+            <div class="w-20 h-20 sm:w-24 sm:h-24" id="g2-bunny-char">
+              ${getBunnySVG('g2b')}
+            </div>
+            <span class="title-font text-lg sm:text-xl font-black text-pink-800 mb-2">THỎ NHỎ</span>
+            <div id="g2-plate-small" class="w-28 h-16 sm:w-32 sm:h-20 rounded-full bg-white border-4 border-pink-400 shadow-inner flex items-center justify-center">
+              <span class="text-xs font-extrabold text-pink-500">Đĩa Thỏ Nhỏ</span>
+            </div>
+          </div>
+        </div>
+      `;
+
+      pair.forEach((_, idx) => {
+        const el = document.getElementById(`g2-item-${idx}`);
+        makeDraggable(el, {
+          onDropCheck: (x, y, draggedEl) => {
+            const plates = document.querySelectorAll('[data-plate-size]');
+            let hitPlate = null;
+            plates.forEach(pl => {
+              const rect = pl.getBoundingClientRect();
+              if (x >= rect.left - 15 && x <= rect.right + 15 && y >= rect.top - 15 && y <= rect.bottom + 15) {
+                hitPlate = pl;
+              }
+            });
+
+            if (!hitPlate) return false;
+
+            const itemSize = draggedEl.dataset.size;
+            const plateSize = hitPlate.dataset.plateSize;
+
+            if (itemSize === plateSize) {
+              draggedEl.dataset.done = 'true';
+              draggedEl.style.visibility = 'hidden';
+
+              if (itemSize === 'big') {
+                State.g2DoneBig = true;
+                document.getElementById('g2-plate-big').innerHTML = `<div class="w-20 h-20">${getItemSVG(r.itemType, 'red')}</div>`;
+                document.getElementById('g2-bear-char').classList.add('anim-dance');
+              } else {
+                State.g2DoneSmall = true;
+                document.getElementById('g2-plate-small').innerHTML = `<div class="w-12 h-12">${getItemSVG(r.itemType, 'yellow')}</div>`;
+                document.getElementById('g2-bunny-char').classList.add('anim-dance');
+              }
+
+              if (State.g2DoneBig && State.g2DoneSmall) {
+                handleCorrectStep(null, false);
+              } else {
+                handleCorrectStep("Đúng rồi! Bé giúp bạn còn lại nhé!", true);
+              }
+              return true;
+            } else {
+              handleWrongStep("Bé nhìn kỹ nhé!");
+              return false;
+            }
+          }
+        });
+      });
+    }
+
+    /* ---------------- TRÒ CHƠI 3: ĐƯỜNG ĐUA CỦA BẠN HÌNH TRÒN ---------------- */
+    function getShapeObjectSVG(kind, colorKey) {
+      const c = COLORS[colorKey] || COLORS.red;
+      if (kind === 'basic-circle') {
+        return `<svg viewBox="0 0 140 140" class="w-full h-full">
+          <circle cx="70" cy="70" r="56" fill="${c.hex}" stroke="#FFF" stroke-width="4"/>
+          <circle cx="53" cy="60" r="6" fill="#1E293B"/><circle cx="87" cy="60" r="6" fill="#1E293B"/>
+          <circle cx="51" cy="58" r="2" fill="#FFF"/><circle cx="85" cy="58" r="2" fill="#FFF"/>
+          <path d="M52 82 Q70 98 88 82" fill="none" stroke="#FFF" stroke-width="5" stroke-linecap="round"/>
+        </svg>`;
+      }
+      if (kind === 'basic-square') {
+        return `<svg viewBox="0 0 140 140" class="w-full h-full">
+          <rect x="20" y="20" width="100" height="100" rx="8" fill="${c.hex}" stroke="#FFF" stroke-width="4"/>
+          <!-- 4 góc nổi bật -->
+          <circle cx="20" cy="20" r="6" fill="#FFCC00"/><circle cx="120" cy="20" r="6" fill="#FFCC00"/>
+          <circle cx="20" cy="120" r="6" fill="#FFCC00"/><circle cx="120" cy="120" r="6" fill="#FFCC00"/>
+          <circle cx="53" cy="60" r="6" fill="#1E293B"/><circle cx="87" cy="60" r="6" fill="#1E293B"/>
+          <path d="M54 84 Q70 96 86 84" fill="none" stroke="#FFF" stroke-width="5" stroke-linecap="round"/>
+        </svg>`;
+      }
+      if (kind === 'triangle') {
+        return `<svg viewBox="0 0 140 140" class="w-full h-full">
+          <polygon points="70,18 124,116 16,116" fill="${c.hex}" stroke="#FFF" stroke-width="4" stroke-linejoin="round"/>
+        </svg>`;
+      }
+      if (kind === 'pizza' || kind === 'plate' || kind === 'wheel') {
+        return `<svg viewBox="0 0 140 140" class="w-full h-full">
+          <circle cx="70" cy="70" r="56" fill="#F59E0B" stroke="#FFF" stroke-width="4"/>
+          <circle cx="70" cy="70" r="44" fill="#FDE047"/>
+          <circle cx="54" cy="54" r="7" fill="#FF3B30"/><circle cx="86" cy="58" r="7" fill="#FF3B30"/><circle cx="68" cy="86" r="7" fill="#FF3B30"/>
+        </svg>`;
+      }
+      if (kind === 'napkin' || kind === 'box') {
+        return `<svg viewBox="0 0 140 140" class="w-full h-full">
+          <rect x="20" y="20" width="100" height="100" rx="6" fill="${c.hex}" stroke="#FFF" stroke-width="4"/>
+          <rect x="32" y="32" width="76" height="76" fill="none" stroke="#FFF" stroke-width="3" stroke-dasharray="8 6"/>
+        </svg>`;
+      }
+      return getItemSVG('ball', colorKey);
+    }
+
+    function renderGame3Round(stage, r) {
+      const opts = shuffleArray(r.options);
+      stage.innerHTML = `
+        <!-- Đường đua hoạt hình sinh động -->
+        <div class="w-full rounded-3xl bg-gradient-to-r from-amber-200 via-yellow-100 to-sky-200 border-4 border-amber-400 p-4 mb-4 relative overflow-hidden">
+          <div class="flex items-center justify-between text-xs sm:text-sm font-black text-amber-900 mb-2">
+            <span>🏁 VẠCH XUẤT PHÁT</span>
+            <span>ĐƯỜNG ĐUA SẮC MÀU</span>
+            <span>🏆 VỀ ĐÍCH</span>
+          </div>
+          <div class="h-4 w-full bg-white/80 rounded-full border-2 border-dashed border-amber-500"></div>
+        </div>
+
+        <!-- Các hình để bé chạm chọn -->
+        <div class="grid grid-cols-2 sm:grid-cols-${opts.length} gap-4 sm:gap-8 place-items-center my-auto py-3">
+          ${opts.map((op, idx) => `
+            <button id="g3-opt-${idx}" onclick="selectGame3Option(${idx}, '${op.shape}')" class="btn-3d bg-white rounded-3xl p-4 sm:p-6 border-4 border-sky-200 flex flex-col items-center justify-center w-36 h-44 sm:w-48 sm:h-56">
+              <div id="g3-shape-box-${idx}" class="w-24 h-24 sm:w-32 sm:h-32">
+                ${getShapeObjectSVG(op.kind, op.color)}
+              </div>
+              <span class="title-font text-lg sm:text-xl font-black text-slate-700 mt-2">${op.label}</span>
+            </button>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    function selectGame3Option(idx, chosenShape) {
+      if (State.roundLocked) return;
+      const r = State.roundsData[State.roundIndex];
+      const box = document.getElementById(`g3-shape-box-${idx}`);
+      const btn = document.getElementById(`g3-opt-${idx}`);
+
+      if (chosenShape === r.target) {
+        if (chosenShape === 'circle') {
+          box.classList.add('anim-roll');
+          handleCorrectStep("Hình tròn! Giỏi quá!");
+        } else {
+          box.classList.add('anim-square-pop');
+          handleCorrectStep("Hình vuông! Hoan hô bé!");
+        }
+      } else {
+        btn.classList.add('anim-wiggle');
+        setTimeout(() => btn.classList.remove('anim-wiggle'), 500);
+        handleWrongStep("Bé nhìn kỹ nhé!");
+      }
+    }
+
+    /* ---------------- TRÒ CHƠI 4: BƯỚM BAY TRÊN CAO – ĐẬU DƯỚI THẤP ---------------- */
+    function getPositionPropSVG(kind) {
+      if (kind === 'kid') {
+        return `<svg viewBox="0 0 140 190" class="w-full h-full">
+          <ellipse cx="70" cy="180" rx="34" ry="8" fill="rgba(0,0,0,0.15)"/>
+          <rect x="48" y="105" width="44" height="52" rx="14" fill="#38BDF8" stroke="#FFF" stroke-width="2.5"/>
+          <rect x="52" y="152" width="14" height="26" rx="6" fill="#1E3A8A"/>
+          <rect x="74" y="152" width="14" height="26" rx="6" fill="#1E3A8A"/>
+          <circle cx="70" cy="64" r="36" fill="#FDE68A" stroke="#F59E0B" stroke-width="2.5"/>
+          <path d="M36 58 Q70 24 104 58" fill="#451A03"/>
+          <circle cx="58" cy="62" r="4.5" fill="#1E293B"/><circle cx="82" cy="62" r="4.5" fill="#1E293B"/>
+          <path d="M58 76 Q70 86 82 76" fill="none" stroke="#B45309" stroke-width="3.5" stroke-linecap="round"/>
+        </svg>`;
+      }
+      if (kind === 'butterfly') {
+        return `<svg viewBox="0 0 110 90" class="w-full h-full">
+          <ellipse cx="34" cy="34" rx="24" ry="18" fill="#FFCC00" stroke="#F59E0B" stroke-width="2.5"/>
+          <ellipse cx="76" cy="34" rx="24" ry="18" fill="#FFCC00" stroke="#F59E0B" stroke-width="2.5"/>
+          <ellipse cx="38" cy="60" rx="18" ry="14" fill="#FF9500" stroke="#F59E0B" stroke-width="2"/>
+          <ellipse cx="72" cy="60" rx="18" ry="14" fill="#FF9500" stroke="#F59E0B" stroke-width="2"/>
+          <rect x="51" y="22" width="8" height="50" rx="4" fill="#78350F"/>
+        </svg>`;
+      }
+      if (kind === 'puppy') {
+        return `<svg viewBox="0 0 120 120" class="w-full h-full">
+          <ellipse cx="60" cy="84" rx="30" ry="24" fill="#D97706" stroke="#92400E" stroke-width="2.5"/>
+          <ellipse cx="32" cy="54" rx="11" ry="22" transform="rotate(20 32 54)" fill="#78350F"/>
+          <ellipse cx="88" cy="54" rx="11" ry="22" transform="rotate(-20 88 54)" fill="#78350F"/>
+          <circle cx="60" cy="50" r="28" fill="#F59E0B" stroke="#92400E" stroke-width="2.5"/>
+          <circle cx="50" cy="46" r="4" fill="#1E293B"/><circle cx="70" cy="46" r="4" fill="#1E293B"/>
+          <ellipse cx="60" cy="56" rx="6" ry="4" fill="#1E293B"/>
+          <path d="M52 63 Q60 70 68 63" fill="none" stroke="#451A03" stroke-width="2.5"/>
+        </svg>`;
+      }
+      if (kind === 'table') {
+        return `<svg viewBox="0 0 180 120" class="w-full h-full">
+          <rect x="26" y="46" width="14" height="66" rx="4" fill="#92400E"/>
+          <rect x="140" y="46" width="14" height="66" rx="4" fill="#92400E"/>
+          <rect x="12" y="32" width="156" height="18" rx="8" fill="#D97706" stroke="#78350F" stroke-width="2.5"/>
+        </svg>`;
+      }
+      if (kind === 'branch') {
+        return `<svg viewBox="0 0 200 100" class="w-full h-full">
+          <path d="M10 60 Q100 45 190 55" fill="none" stroke="#78350F" stroke-width="14" stroke-linecap="round"/>
+          <ellipse cx="150" cy="38" rx="22" ry="11" transform="rotate(-20 150 38)" fill="#22C55E"/>
+        </svg>`;
+      }
+      if (kind === 'bird') {
+        return getCharacterSVG('chick');
+      }
+      if (kind === 'leaf') {
+        return `<svg viewBox="0 0 180 110" class="w-full h-full">
+          <path d="M18 55 Q90 10 164 55 Q90 100 18 55 Z" fill="#22C55E" stroke="#15803D" stroke-width="3"/>
+          <path d="M18 55 L164 55" stroke="#BBF7D0" stroke-width="3"/>
+        </svg>`;
+      }
+      if (kind === 'chair') {
+        return `<svg viewBox="0 0 140 160" class="w-full h-full">
+          <rect x="34" y="20" width="72" height="66" rx="10" fill="#007AFF" stroke="#FFF" stroke-width="2.5"/>
+          <rect x="26" y="82" width="88" height="16" rx="6" fill="#004ECB"/>
+          <rect x="34" y="98" width="12" height="48" rx="4" fill="#78350F"/>
+          <rect x="94" y="98" width="12" height="48" rx="4" fill="#78350F"/>
+        </svg>`;
+      }
+      if (kind === 'box') {
+        return getItemSVG('gift', 'yellow');
+      }
+      if (kind === 'house') {
+        return `<svg viewBox="0 0 180 170" class="w-full h-full">
+          <polygon points="90,14 166,76 14,76" fill="#FF3B30" stroke="#FFF" stroke-width="3"/>
+          <rect x="28" y="76" width="124" height="82" rx="8" fill="#FEF08A" stroke="#F59E0B" stroke-width="3"/>
+          <rect x="74" y="106" width="32" height="52" rx="4" fill="#92400E"/>
+        </svg>`;
+      }
+      if (kind === 'bear') return getCharacterSVG('bear');
+      if (kind === 'car') return getItemSVG('car', 'red');
+      if (kind === 'flower') return getItemSVG('flower', 'red');
+      return getItemSVG('ball', 'yellow');
+    }
+
+    function renderGame4Round(stage, r) {
+      if (r.mode === 'top-bottom') {
+        stage.innerHTML = `
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center w-full my-auto">
+            <!-- Đồ vật cần di chuyển -->
+            <div class="md:col-span-4 flex flex-col items-center bg-amber-50 border-4 border-amber-300 rounded-3xl p-4">
+              <span class="text-xs font-extrabold text-amber-800 mb-2">Kéo hoặc chạm vị trí để đặt nhé!</span>
+              <div id="g4-mover" class="draggable-item w-28 h-28 sm:w-32 sm:h-32 bg-white rounded-3xl p-2 shadow-lg border-4 border-amber-400">
+                ${getPositionPropSVG(r.mover)}
+              </div>
+            </div>
+
+            <!-- Sân khấu Trên - Dưới rõ chiều sâu -->
+            <div class="md:col-span-8 flex flex-col items-center justify-between bg-gradient-to-b from-sky-200 via-sky-100 to-lime-200 border-4 border-white rounded-3xl p-4 min-h-[340px] relative">
+              <!-- Vùng PHÍA TRÊN -->
+              <div id="g4-zone-top" onclick="checkGame4Zone('top')" data-pos-zone="top" class="drop-zone cursor-pointer w-full max-w-md h-24 rounded-3xl border-4 border-dashed border-sky-500 bg-white/65 hover:bg-white/90 flex items-center justify-center gap-2 transition-all">
+                <span class="title-font text-lg sm:text-xl font-black text-sky-700">⬆️ PHÍA TRÊN</span>
+              </div>
+
+              <!-- Vật chuẩn ở giữa -->
+              <div class="w-36 h-36 sm:w-44 sm:h-44 my-1 flex items-center justify-center">
+                ${getPositionPropSVG(r.anchor)}
+              </div>
+
+              <!-- Vùng PHÍA DƯỚI -->
+              <div id="g4-zone-bottom" onclick="checkGame4Zone('bottom')" data-pos-zone="bottom" class="drop-zone cursor-pointer w-full max-w-md h-24 rounded-3xl border-4 border-dashed border-amber-600 bg-white/65 hover:bg-white/90 flex items-center justify-center gap-2 transition-all">
+                <span class="title-font text-lg sm:text-xl font-black text-amber-800">⬇️ PHÍA DƯỚI</span>
+              </div>
+            </div>
+          </div>
+        `;
+      } else {
+        // Chế độ Trước - Sau có chiều sâu phối cảnh rõ ràng
+        stage.innerHTML = `
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center w-full my-auto">
+            <div class="md:col-span-4 flex flex-col items-center bg-purple-50 border-4 border-purple-300 rounded-3xl p-4">
+              <span class="text-xs font-extrabold text-purple-800 mb-2">Kéo hoặc chạm vị trí để đặt nhé!</span>
+              <div id="g4-mover" class="draggable-item w-28 h-28 sm:w-32 sm:h-32 bg-white rounded-3xl p-2 shadow-lg border-4 border-purple-400">
+                ${getPositionPropSVG(r.mover)}
+              </div>
+            </div>
+
+            <!-- Sân khấu phối cảnh Trước - Sau -->
+            <div class="md:col-span-8 flex flex-col items-center justify-between bg-gradient-to-b from-indigo-100 via-emerald-100 to-amber-200 border-4 border-white rounded-3xl p-4 min-h-[350px] relative">
+              <!-- Vùng PHÍA SAU (ở xa hơn, phía trên nền đất) -->
+              <div id="g4-zone-back" onclick="checkGame4Zone('back')" data-pos-zone="back" class="drop-zone cursor-pointer w-64 sm:w-80 h-24 rounded-3xl border-4 border-dashed border-indigo-500 bg-white/70 hover:bg-white/95 flex items-center justify-center z-10">
+                <span class="title-font text-lg sm:text-xl font-black text-indigo-700">🔙 PHÍA SAU</span>
+              </div>
+
+              <!-- Vật chuẩn ở lớp giữa -->
+              <div class="w-36 h-36 sm:w-44 sm:h-44 -my-5 z-20 pointer-events-none flex items-center justify-center">
+                ${getPositionPropSVG(r.anchor)}
+              </div>
+
+              <!-- Vùng PHÍA TRƯỚC (ở gần mắt bé hơn, che nhẹ phần chân vật chuẩn) -->
+              <div id="g4-zone-front" onclick="checkGame4Zone('front')" data-pos-zone="front" class="drop-zone cursor-pointer w-72 sm:w-96 h-24 rounded-3xl border-4 border-dashed border-rose-500 bg-white/80 hover:bg-white flex items-center justify-center z-30 shadow-md">
+                <span class="title-font text-lg sm:text-xl font-black text-rose-700">🔜 PHÍA TRƯỚC</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      const moverEl = document.getElementById('g4-mover');
+      makeDraggable(moverEl, {
+        onDropCheck: (x, y) => {
+          const zones = document.querySelectorAll('[data-pos-zone]');
+          let hit = null;
+          zones.forEach(z => {
+            const rect = z.getBoundingClientRect();
+            if (x >= rect.left - 15 && x <= rect.right + 15 && y >= rect.top - 15 && y <= rect.bottom + 15) {
+              hit = z.dataset.posZone;
+            }
+          });
+          if (!hit) return false;
+          return checkGame4Zone(hit);
+        }
+      });
+    }
+
+    function checkGame4Zone(chosenZone) {
+      if (State.roundLocked) return false;
+      const r = State.roundsData[State.roundIndex];
+      const zoneEl = document.getElementById(`g4-zone-${chosenZone}`);
+      const moverEl = document.getElementById('g4-mover');
+
+      if (chosenZone === r.targetZone) {
+        if (moverEl) moverEl.style.visibility = 'hidden';
+        if (zoneEl) {
+          zoneEl.innerHTML = `<div class="w-20 h-20 animate-bounce">${getPositionPropSVG(r.mover)}</div>`;
+          zoneEl.classList.add('bg-yellow-200', 'border-amber-500');
+        }
+        handleCorrectStep();
+        return true;
+      } else {
+        if (zoneEl) {
+          zoneEl.classList.add('anim-wiggle');
+          setTimeout(() => zoneEl.classList.remove('anim-wiggle'), 500);
+        }
+        handleWrongStep("Bé thử lại nhé!");
+        return false;
+      }
+    }
+
+    /* ---------------- TRÒ CHƠI 5: ĐÀN GÀ CON THEO MẸ (MỘT - NHIỀU) ---------------- */
+    function getGame5EntitySVG(type, uidPrefix = 'g5') {
+      if (type === 'hen') return getCharacterSVG('hen');
+      if (type === 'chick') return getCharacterSVG('chick');
+      if (type === 'duck') return getCharacterSVG('duck');
+      if (type === 'bunny') return getBunnySVG(uidPrefix + '_' + Math.random().toString(36).slice(2, 6));
+      if (type === 'butterfly') return getPositionPropSVG('butterfly');
+      if (type === 'ball') return getItemSVG('ball', 'red');
+      if (type === 'flower') return getItemSVG('flower', 'yellow');
+      return getCharacterSVG('chick');
+    }
+
+    function renderSingleOrManyVisual(type, isMany) {
+      if (!isMany) {
+        return `<div class="w-28 h-28 sm:w-36 sm:h-36 flex items-center justify-center">${getGame5EntitySVG(type, 'g5s')}</div>`;
+      }
+      // Hiển thị đàn/nhóm 5 đối tượng tương phản rõ rệt với 1 đối tượng (không đánh số)
+      return `
+        <div class="grid grid-cols-3 gap-2 sm:gap-3 place-items-center">
+          ${Array(5).fill(0).map((_, i) => `
+            <div class="w-14 h-14 sm:w-16 sm:h-16 anim-float ${i === 3 ? 'col-start-1' : ''}" style="animation-delay:${i * 0.14}s">
+              ${getGame5EntitySVG(type, 'g5m_' + i)}
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    function renderGame5Round(stage, r) {
+      State.g5GatheredCount = 0;
+
+      if (r.sound === 'chicken') {
+        AudioEngine.playChickenCluck();
+        setTimeout(() => AudioEngine.playChickPeep(), 480);
+      } else if (r.sound === 'duck') {
+        AudioEngine.playDuckQuack();
+      }
+
+      if (r.mode === 'choose') {
+        const groups = shuffleArray([
+          { kind: 'one', type: r.singleVisual, label: r.singleLabel },
+          { kind: 'many', type: r.manyVisual, label: r.manyLabel }
+        ]);
+        stage.innerHTML = `
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 w-full max-w-4xl mx-auto my-auto py-3">
+            ${groups.map((g, idx) => `
+              <button id="g5-grp-${idx}" onclick="selectGame5Group(${idx}, '${g.kind}')" class="btn-3d bg-gradient-to-b from-lime-100 to-emerald-200 border-4 border-white rounded-3xl p-5 min-h-[250px] flex flex-col items-center justify-between">
+                <div class="flex-1 flex items-center justify-center">
+                  ${renderSingleOrManyVisual(g.type, g.kind === 'many')}
+                </div>
+                <span class="title-font text-xl sm:text-2xl font-black text-emerald-900 bg-white/90 px-6 py-1.5 rounded-2xl mt-3 shadow-sm">
+                  ${g.label}
+                </span>
+              </button>
+            `).join('')}
+          </div>
+        `;
+        return;
+      }
+
+      // Chế độ đưa một hoặc nhiều con về cạnh Mẹ (Gà Mẹ - Gà Con, Thỏ Mẹ - Thỏ Con)
+      const momSVG = getGame5EntitySVG(r.momVisual, 'g5mom');
+      const count = r.availableCount;
+      const requiredCount = r.requiredCount;
+
+      stage.innerHTML = `
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center w-full my-auto">
+          <!-- Khu vực tập hợp bên Mẹ (MỘT) -->
+          <div id="g5-nest" data-nest="true" class="drop-zone md:col-span-6 bg-amber-100/90 border-4 border-amber-400 rounded-3xl p-4 min-h-[270px] flex flex-col items-center justify-between">
+            <span class="title-font text-xl font-black text-amber-900 bg-white/85 px-5 py-1 rounded-full shadow-sm">${r.momLabel}</span>
+            <div class="flex items-center justify-center gap-2 flex-wrap my-2">
+              <div class="w-32 h-32 sm:w-40 sm:h-40">${momSVG}</div>
+              <div id="g5-gathered-area" class="flex items-center flex-wrap gap-1.5 max-w-[210px]"></div>
+            </div>
+            <span class="text-xs sm:text-sm font-extrabold text-amber-800">Chạm hoặc kéo các bạn nhỏ về cạnh Mẹ nhé!</span>
+          </div>
+
+          <!-- Bãi cỏ chứa đúng số lượng bạn nhỏ theo từng lượt (1 bạn hoặc nhiều bạn) -->
+          <div class="md:col-span-6 bg-lime-200/85 border-4 border-lime-500/40 rounded-3xl p-4 min-h-[270px] flex flex-col items-center justify-center">
+            <span class="title-font text-lg font-black text-emerald-900 bg-white/80 px-4 py-1 rounded-full mb-3">
+              ${count === 1 ? 'MỘT BẠN NHỎ' : 'NHIỀU BẠN NHỎ'}
+            </span>
+            <div class="${count === 1 ? 'flex items-center justify-center' : 'grid grid-cols-3 gap-3 sm:gap-4 place-items-center'}">
+              ${Array(count).fill(0).map((_, idx) => `
+                <div id="g5-baby-${idx}" class="draggable-item ${count === 1 ? 'w-28 h-28 sm:w-32 sm:h-32' : 'w-20 h-20 sm:w-24 sm:h-24'} bg-white/90 rounded-3xl p-1.5 border-4 border-white shadow-md">
+                  ${getGame5EntitySVG(r.babyVisual, 'g5baby_' + idx)}
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+      `;
+
+      const moveBabyToMom = (babyEl) => {
+        if (State.roundLocked || babyEl.dataset.done === 'true') return;
+        babyEl.dataset.done = 'true';
+        babyEl.style.visibility = 'hidden';
+        State.g5GatheredCount++;
+
+        const area = document.getElementById('g5-gathered-area');
+        const mini = document.createElement('div');
+        mini.className = 'w-14 h-14 sm:w-16 sm:h-16 animate-bounce';
+        mini.innerHTML = getGame5EntitySVG(r.babyVisual, 'g5done_' + State.g5GatheredCount);
+        area.appendChild(mini);
+
+        if (r.sound === 'chicken') AudioEngine.playChickPeep();
+
+        if (State.g5GatheredCount >= requiredCount) {
+          handleCorrectStep();
+        } else {
+          AudioEngine.playTingTing();
+          spawnStarsAt(window.innerWidth * 0.35, window.innerHeight * 0.5, 5);
+        }
+      };
+
+      for (let i = 0; i < count; i++) {
+        const el = document.getElementById(`g5-baby-${i}`);
+        makeDraggable(el, {
+          onTapFallback: (clickedEl) => moveBabyToMom(clickedEl),
+          onDropCheck: (x, y, draggedEl) => {
+            const nest = document.getElementById('g5-nest').getBoundingClientRect();
+            if (x >= nest.left - 20 && x <= nest.right + 20 && y >= nest.top - 20 && y <= nest.bottom + 20) {
+              moveBabyToMom(draggedEl);
+              return true;
+            }
+            return false;
+          }
+        });
+      }
+    }
+
+    function selectGame5Group(idx, chosenKind) {
+      if (State.roundLocked) return;
+      const r = State.roundsData[State.roundIndex];
+      const btn = document.getElementById(`g5-grp-${idx}`);
+      if (chosenKind === r.targetGroup) {
+        btn.classList.add('anim-dance');
+        if (r.finalCelebration) {
+          handleCorrectStep("Một Gà Mẹ – Nhiều Gà Con! Giỏi quá!");
+        } else {
+          handleCorrectStep();
+        }
+      } else {
+        btn.classList.add('anim-wiggle');
+        setTimeout(() => btn.classList.remove('anim-wiggle'), 500);
+        handleWrongStep("Bé nhìn kỹ nhé!");
+      }
+    }
+
+    /*************************************************************************
+     * 7. GÓC CỦA CÔ (LƯU TRỮ LOCALSTORAGE & QUẢN LÝ SƯ PHẠM)
+     *************************************************************************/
+    const STORAGE_STATS_KEY = 'vtt_play_stats_v1';
+    const STORAGE_NOTES_KEY = 'vtt_teacher_notes_v1';
+
+    function getPlayStats() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_STATS_KEY)) || { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+      } catch {
+        return { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+      }
+    }
+
+    function incrementPlayStat(gameId) {
+      const stats = getPlayStats();
+      stats[gameId] = (stats[gameId] || 0) + 1;
+      localStorage.setItem(STORAGE_STATS_KEY, JSON.stringify(stats));
+    }
+
+    function resetPlayStats() {
+      localStorage.setItem(STORAGE_STATS_KEY, JSON.stringify({ 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }));
+      renderTeacherCorner();
+    }
+
+    function getTeacherNotes() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_NOTES_KEY)) || [];
+      } catch {
+        return [];
+      }
+    }
+
+    function saveTeacherNote(e) {
+      e.preventDefault();
+      const editId = document.getElementById('note-edit-id').value;
+      const child = document.getElementById('note-child').value.trim() || 'Nhóm lớp Nhà trẻ';
+      const gameId = document.getElementById('note-game').value;
+      const level = document.getElementById('note-level').value;
+      const comment = document.getElementById('note-comment').value.trim();
+      if (!comment) return;
+
+      const notes = getTeacherNotes();
+      const nowStr = new Date().toLocaleString('vi-VN');
+
+      if (editId) {
+        const idx = notes.findIndex(n => n.id === editId);
+        if (idx !== -1) {
+          notes[idx] = { ...notes[idx], child, gameId, level, comment, updatedAt: nowStr };
+        }
+      } else {
+        notes.unshift({
+          id: 'note_' + Date.now(),
+          child,
+          gameId,
+          level,
+          comment,
+          createdAt: nowStr
+        });
+      }
+
+      localStorage.setItem(STORAGE_NOTES_KEY, JSON.stringify(notes));
+      document.getElementById('teacher-note-form').reset();
+      document.getElementById('note-edit-id').value = '';
+      document.getElementById('note-submit-btn').textContent = 'Lưu';
+      renderTeacherNotesList();
+    }
+
+    function editTeacherNote(id) {
+      const notes = getTeacherNotes();
+      const item = notes.find(n => n.id === id);
+      if (!item) return;
+      document.getElementById('note-edit-id').value = item.id;
+      document.getElementById('note-child').value = item.child;
+      document.getElementById('note-game').value = item.gameId;
+      document.getElementById('note-level').value = item.level;
+      document.getElementById('note-comment').value = item.comment;
+      document.getElementById('note-submit-btn').textContent = 'Cập nhật';
+    }
+
+    function deleteTeacherNote(id) {
+      const notes = getTeacherNotes().filter(n => n.id !== id);
+      localStorage.setItem(STORAGE_NOTES_KEY, JSON.stringify(notes));
+      renderTeacherNotesList();
+    }
+
+    function openTeacherCorner() {
+      showView('teacher');
+      renderTeacherCorner();
+    }
+
+    function renderTeacherCorner() {
+      const stats = getPlayStats();
+      const statsGrid = document.getElementById('teacher-stats-grid');
+      statsGrid.innerHTML = [1, 2, 3, 4, 5].map(id => `
+        <div class="bg-sky-50 border-2 border-sky-200 rounded-2xl p-3 text-center">
+          <div class="text-2xl mb-1">${GAME_META[id].icon}</div>
+          <div class="text-xs font-extrabold text-slate-600 line-clamp-1">${GAME_META[id].goal}</div>
+          <div class="title-font text-2xl font-black text-sky-700 mt-1">${stats[id] || 0} <span class="text-xs font-bold">lượt</span></div>
+        </div>
+      `).join('');
+
+      const guidesList = document.getElementById('teacher-guides-list');
+      guidesList.innerHTML = [1, 2, 3, 4, 5].map(id => {
+        const m = GAME_META[id];
+        return `
+          <div class="bg-slate-50 border-2 border-slate-200 rounded-2xl p-4 flex flex-col justify-between gap-3">
+            <div>
+              <div class="flex items-center justify-between gap-2 mb-1">
+                <h4 class="title-font text-base sm:text-lg font-black text-sky-900">${m.title}</h4>
+                <span class="bg-amber-200 text-amber-900 text-xs font-extrabold px-2.5 py-0.5 rounded-full shrink-0">10 lượt</span>
+              </div>
+              <p class="text-xs sm:text-sm text-slate-700 mb-1"><strong>🎯 Mục đích:</strong> ${m.purpose}</p>
+              <p class="text-xs sm:text-sm text-slate-700 mb-1"><strong>🎲 Tổ chức:</strong> ${m.guide}</p>
+              <p class="text-xs sm:text-sm text-slate-700"><strong>🤝 Hỗ trợ trẻ:</strong> ${m.support}</p>
+            </div>
+            <button onclick="launchGame(${id})" class="btn-3d bg-emerald-500 text-white font-extrabold py-2.5 px-4 rounded-xl text-sm self-start">
+              ▶️ Mở trò chơi này cho trẻ trải nghiệm
+            </button>
+          </div>
+        `;
+      }).join('');
+
+      renderTeacherNotesList();
+    }
+
+    function renderTeacherNotesList() {
+      const list = document.getElementById('teacher-notes-list');
+      const notes = getTeacherNotes();
+      if (notes.length === 0) {
+        list.innerHTML = `<p class="text-xs sm:text-sm font-bold text-slate-500 italic">Chưa có nhận xét nào được lưu. Cô có thể nhập nhận xét ở biểu mẫu phía trên.</p>`;
+        return;
+      }
+      list.innerHTML = notes.map(n => `
+        <div class="bg-white border-2 border-indigo-100 rounded-2xl p-3 flex flex-wrap items-center justify-between gap-2 shadow-sm">
+          <div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="font-black text-indigo-900 text-sm">${n.child}</span>
+              <span class="bg-sky-100 text-sky-800 text-xs font-extrabold px-2 py-0.5 rounded-full">Trò chơi ${n.gameId}</span>
+              <span class="bg-amber-100 text-amber-900 text-xs font-extrabold px-2 py-0.5 rounded-full">${n.level}</span>
+              <span class="text-xs text-slate-400">${n.createdAt}</span>
+            </div>
+            <p class="text-sm font-bold text-slate-700 mt-1">${n.comment}</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="editTeacherNote('${n.id}')" class="px-3 py-1.5 rounded-xl bg-amber-100 text-amber-900 text-xs font-extrabold">✏️ Sửa</button>
+            <button onclick="deleteTeacherNote('${n.id}')" class="px-3 py-1.5 rounded-xl bg-rose-100 text-rose-700 text-xs font-extrabold">🗑️ Xóa</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    /*************************************************************************
+     * 8. KHỞI TẠO ỨNG DỤNG KHI TẢI TRANG
+     *************************************************************************/
+    window.addEventListener('DOMContentLoaded', () => {
+      // Dựng nhân vật Thỏ Trắng & các bạn trên Trang chủ và màn hình hoàn thành
+      document.getElementById('home-bunny-container').innerHTML = getBunnySVG('home_b');
+      document.getElementById('game-bunny-host').innerHTML = getBunnySVG('game_b');
+      document.getElementById('home-char-bear').innerHTML = getCharacterSVG('bear');
+      document.getElementById('home-char-duck').innerHTML = getCharacterSVG('duck');
+      document.getElementById('home-char-frog').innerHTML = getCharacterSVG('frog');
+      document.getElementById('home-char-chick').innerHTML = getCharacterSVG('chick');
+
+      document.getElementById('win-bunny').innerHTML = getBunnySVG('win_b');
+      document.getElementById('win-bear').innerHTML = getCharacterSVG('bear');
+      document.getElementById('win-duck').innerHTML = getCharacterSVG('duck');
+      document.getElementById('win-frog').innerHTML = getCharacterSVG('frog');
+
+      AudioEngine.init();
+      showView('home');
+
+      // Tự động đọc lời chào khi mở ứng dụng (và tự kích hoạt lại ngay lần chạm đầu tiên nếu trình duyệt chặn autoplay)
+      setTimeout(() => {
+        playGreeting();
+      }, 450);
+
+      const unlockAudioOnce = () => {
+        AudioEngine.ensureContext();
+        if (AudioEngine.enabled) {
+          AudioEngine.startBGM();
+          if (window.speechSynthesis && !window.speechSynthesis.speaking && State.currentView === 'home') {
+            playGreeting();
+          }
+        }
+        window.removeEventListener('pointerdown', unlockAudioOnce);
+      };
+      window.addEventListener('pointerdown', unlockAudioOnce, { once: true });
+    });
+  </script>
+</body>
+</html>
