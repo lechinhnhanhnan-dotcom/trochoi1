@@ -1097,30 +1097,38 @@
           }
 
           const q = encodeURIComponent(chunks[idx]);
-          const url = `https://translate.google.com/translate_tts?ie=UTF-8&tl=vi-VN&client=tw-ob&q=${q}`;
-          const audio = new Audio(url);
-          audio.playbackRate = 0.90; // Tốc độ dịu dàng, to rõ, chậm rãi cho trẻ nhà trẻ
-          audio.volume = 1.0;
-          this.ttsAudio = audio;
+         const url = `https://streamelements.com{q}`;
+      const audio = new Audio(url);
+      audio.playbackRate = 0.95;
+      audio.volume = 1.0;
+      this.ttsAudio = audio;
 
-          audio.onplay = () => {
-            setBunnyTalking(true);
-            if (idx === 0 && onStart) onStart();
-          };
-          audio.onended = () => {
-            idx++;
-            playNextChunk();
-          };
-          audio.onerror = () => {
-            setBunnyTalking(false);
-            if (onEnd) onEnd();
-          };
-
-          audio.play().catch(() => {
-            setBunnyTalking(false);
-          });
-        };
-
+      audio.onplay = () => {
+        setBunnyTalking(true);
+        if (idx === 0 && onStart) onStart();
+      };
+      audio.onended = () => {
+        idx++;
+        playNextChunk();
+      };
+      audio.onerror = () => {
+        // Dự phòng: Dùng giọng đọc mặc định của trình duyệt nếu API lỗi
+        if ('speechSynthesis' in window) {
+          const u = new SpeechSynthesisUtterance(chunks[idx]);
+          u.lang = 'vi-VN';
+          u.onstart = () => { setBunnyTalking(true); if (idx === 0 && onStart) onStart(); };
+          u.onend = () => { idx++; playNextChunk(); };
+          u.onerror = () => { setBunnyTalking(false); if (onEnd) onEnd(); };
+          window.speechSynthesis.speak(u);
+        } else {
+          setBunnyTalking(false);
+          if (onEnd) onEnd();
+        }
+      };
+      audio.play().catch(() => {
+        setBunnyTalking(false);
+        if (onEnd) onEnd();
+      });
         playNextChunk();
       },
 
